@@ -28,9 +28,11 @@
 }
 
 .glitch-text {
-  animation: glitch 0.5s steps(1) infinite;
-  animation-delay: 10s;
+  animation: glitch 0.5s steps(1, end);
+  animation-delay: 3s;
   animation-iteration-count: infinite;
+  animation-duration: 0.5s;
+  animation-timing-function: steps(1, end);
 }
     
     body {
