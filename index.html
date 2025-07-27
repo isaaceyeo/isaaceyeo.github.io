@@ -30,10 +30,36 @@
         z-index: -1;  /* sit behind your content */
     }
 
-    @keyframes spin-bg {
-        from { transform: rotate(0deg); }
-        to   { transform: rotate(360deg); }
-    }
+/* full‑screen fixed container, behind everything */
+.collage-scroll {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: -1;
+}
+
+/* track is twice as wide, flexed horizontally */
+.collage-track {
+  display: flex;
+  width: 200%;    /* two images, each 100% of viewport */
+  height: 100%;
+  animation: scroll-collage 30s linear infinite;
+}
+
+/* each img fills 50% of the track (i.e. full viewport) */
+.collage-track img {
+  width: 50%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* keyframes to slide left by half the track (one full image) */
+@keyframes scroll-collage {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
 
     /* GRID */
     .video-buttons {
@@ -101,6 +127,13 @@
   </style>
 </head>
 <body>
+
+    <div class="collage-scroll">
+        <div class="collage-track">
+            <img src="images/Montage.jpg" alt="">
+            <img src="images/Montage.jpg" alt="">
+        </div>
+    </div>
 
     <h1 class="brand" style="text-align:center; margin:40px 0 20px;">Isaac Yeo</h1>
   <!-- TWO CARDS -->
