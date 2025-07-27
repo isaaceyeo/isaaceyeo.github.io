@@ -8,32 +8,32 @@
 
   <style>
 
-@keyframes glitch {
-  0% {
-    transform: none;
-    text-shadow: none;
-  }
-  10% {
-    transform: skew(1deg, -1deg);
-    text-shadow: -2px 0 red, 2px 0 blue;
-  }
-  20% {
-    transform: skew(-1deg, 1deg);
-    text-shadow: -2px 0 blue, 2px 0 red;
-  }
-  30% {
-    transform: none;
-    text-shadow: none;
-  }
-}
+    @keyframes glitch {
+    0% {
+        transform: none;
+        text-shadow: none;
+    }
+    10% {
+        transform: skew(1deg, -1deg);
+        text-shadow: -2px 0 red, 2px 0 blue;
+    }
+    20% {
+        transform: skew(-1deg, 1deg);
+        text-shadow: -2px 0 blue, 2px 0 red;
+    }
+    30% {
+        transform: none;
+        text-shadow: none;
+    }
+    }
 
-.glitch-text {
-  animation: glitch 0.5s steps(1, end);
-  animation-delay: 3s;
-  animation-iteration-count: infinite;
-  animation-duration: 0.5s;
-  animation-timing-function: steps(1, end);
-}
+    .glitch-text {
+    display: inline-block;
+    }
+
+    .glitch-active {
+    animation: glitch 0.5s steps(1, end);
+    }
     
     body {
       margin: 0;
