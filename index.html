@@ -67,9 +67,9 @@
         color: white;
         display: flex;
         justify-content: space-between;
-        align-items: stretch;
+        align-items: center; /* ensures vertical centering */
         height: 60px;
-        padding: 0;
+        padding: 0 30px;
     }
     /* ************** */
 
@@ -96,15 +96,16 @@
     .banner-btn {
         background-color: #171717;
         color: #ffffff;
-        display: flex;
-        align-items: center;
-        padding: 8px 16px; /* Creates top & bottom space */
+        padding: 8px 16px; /* controls button height */
         text-decoration: none;
         font-weight: 600;
         transition: background-color 0.2s, color 0.2s;
         border-radius: 0;
-        height: fit-content;
-        margin: auto 0; /* centers vertically */
+        display: flex;
+        align-items: center;
+        height: auto;
+        margin-top: 6px;
+        margin-bottom: 6px;
     }
     /* ****** */
 
