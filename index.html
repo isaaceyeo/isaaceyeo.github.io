@@ -4,45 +4,86 @@
   <meta charset="UTF-8">
   <title>Isaac Yeo</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <!-- Bebas Neue for the button text -->
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
 
   <style>
-
-
-
-    .brand {
-        font-family: 'Bebas Neue', sans-serif;
-        display: flex;
-        align-items: center;
-        height: 100%;
-        padding: 0 16px;
-        color: white;
-        font-size: 54px;
-        font-weight: normal;
-        text-decoration: none;
-        letter-spacing: 1px;
-    }
-
-    /* ************** */
-    /* MAIN PAGE TEXT */
-    body {
+    /* Make page fill viewport and remove scrollbars */
+    html, body {
       margin: 0;
-      background-color: #171717;
+      height: 100%;
+      overflow: hidden;
       font-family: 'Roboto', sans-serif;
-      color: #ffffff;
     }
-    /* ************** */
 
+    /* Container for the video background */
+    .video-hero {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Fullscreen YouTube iframe, centered & cropped */
+    .video-hero iframe {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 177.78vh;  /* 100 * (16/9) */
+      height: 100vh;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    /* Black overlay to darken the video */
+    .video-hero .overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: 1;
+    }
+
+    /* Centered content wrapper */
+    .hero-content {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      text-align: center;
+    }
+
+    /* Big button style */
+    .hero-btn {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px;
+      color: #ffffff;
+      background: rgba(255,255,255,0.1);
+      border: 2px solid #ffffff;
+      padding: 16px 32px;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    .hero-btn:hover {
+      background: rgba(255,255,255,0.2);
+      color: #000000;
+    }
   </style>
 </head>
+
 <body>
+  <div class="video-hero">
+    <!-- Replace YOUTUBE_ID with your actual video ID -->
+    <iframe 
+      src="https://www.youtube.com/watch?v=oBsOuA5qgFg" 
+      frameborder="0" 
+      allow="autoplay; fullscreen">
+    </iframe>
 
-  <!-- ********* -->
-  <!-- PAGE TEXT -->
-  <div style="padding: 40px; text-align: center;">
-    <h1>Hello, I am Isaac</h1>
+    <div class="overlay"></div>
+
+    <div class="hero-content">
+      <!-- Link goes to your spreadsheet page -->
+      <a href="spreadsheet.html" class="hero-btn">View Sports Data</a>
+    </div>
   </div>
-  <!-- ********* -->
-
 </body>
 </html>
