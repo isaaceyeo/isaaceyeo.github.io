@@ -9,9 +9,8 @@
   <style>
 
     .brand {
-        display: flex;
-        align-items: center;  /* center the text inside this full‑height box */
-        height: 100%;         /* now spans the full 60px */
+        display: inline-block;
+        height: 100%;            /* ← now fills the full 60px of banner-left */
         padding: 0 16px;
         color: white;
         font-size: 26px;
@@ -65,8 +64,7 @@
     .banner-navbar {
         display: flex;
         justify-content: space-between;
-        /* center children’ boxes in the 60px strip, but they’ll be 100% tall */  
-        align-items: center; 
+        align-items: stretch;    /* ← stretch children to full height */
         height: 60px;
         padding: 0 30px;
         background-color: #000;
@@ -75,11 +73,18 @@
 
     /* ******************************* */
     /* NAVIGATION BAR LEFT (MAIN ICON) */
-    .banner-left,
+    .banner-left {
+        display: flex;
+        align-items: center; 
+    }
+    /* ******************************* */
+
+    /* ****************************** */
+    /* NAVIGATION BAR RIGHT (BUTTONS) */
     .banner-right {
-    display: flex;
-    align-items: center;  /* center their contents vertically */
-    height: 100%;  
+        display: flex;
+        gap: 20px;
+        height: 100%;
     }
     /* ****************************** */
 
