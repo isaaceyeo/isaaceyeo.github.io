@@ -7,67 +7,62 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-    position: relative;
-    overflow: hidden;
+      background: #171717;
+      color: #fff;
+      font-family: 'Roboto', sans-serif;
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
     }
 
+    /* FULL‑SCREEN SCROLLING COLLAGE */
+    .collage-scroll {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      z-index: -1;
+    }
+    .collage-track.vertical {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 200%;
+      animation: scroll-vertical 30s linear infinite;
+    }
+    .collage-track.vertical img {
+      width: 100%;
+      height: 50%;
+      object-fit: cover;
+      filter: brightness(0.5);
+    }
+    @keyframes scroll-vertical {
+      from { transform: translateY(0); }
+      to   { transform: translateY(-50%); }
+    }
+
+    /* HEADER */
     .brand {
       font-family: 'Bebas Neue', sans-serif;
       font-size: 64px;
       color: white;
       text-decoration: none;
+      text-align: center;
+      display: block;
+      margin: 40px 0 20px;
+      position: relative;
+      z-index: 1;
     }
 
-    body::before {
-        content: '';
-        position: fixed;
-        top: 0; left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: url('images/Montage.jpg') no-repeat center top;
-        background-size: auto;            /* use the image’s native resolution */
-        animation: scroll-bg 60s linear infinite alternate;
-        z-index: -1;
-    }
-
-.collage-scroll {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  z-index: -1;
-}
-
-.collage-track.vertical {
-  display: flex;
-  flex-direction: column;  /* stack images top to bottom */
-  width: 100%;
-  height: 200%;           /* two full‑height images */
-  animation: scroll-vertical 30s linear infinite;
-}
-
-.collage-track img {
-  filter: brightness(0.5);
-}
-
-.collage-track.vertical img {
-  width: 100%;
-  height: 50%;            /* each image is half the track height */
-  object-fit: cover;
-}
-
-@keyframes scroll-bg {
-  from { background-position: center top; }
-  to   { background-position: center bottom; }
-}
-
-    /* GRID */
+    /* VIDEO BUTTON GRID */
     .video-buttons {
       display: flex;
       justify-content: center;
       gap: 20px;
       padding: 40px;
+      position: relative;
+      z-index: 1;
     }
 
     /* CARD BASE */
@@ -77,17 +72,17 @@
       height: 180px;
       overflow: hidden;
       border-radius: 4px;
+      background-color: #171717;
     }
 
-    /* SPORTS VIDEO (unchanged) */
+    /* SPORTS VIDEO */
     .video-button.sports .bg-video {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;      /* fill the 320px width */
-        height: 100%;     /* fill the 180px height */
-        object-fit: cover;/* crop as needed to cover the box */
-        pointer-events: none;
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
     }
 
     /* ABOUT ME PLACEHOLDER */
@@ -97,7 +92,7 @@
       background: #333;
     }
 
-    /* FAIRLY‑DARK OVERLAY */
+    /* OVERLAY */
     .video-button .overlay {
       position: absolute;
       inset: 0;
@@ -129,26 +124,27 @@
 </head>
 <body>
 
-    <div class="collage-scroll">
-        <div class="collage-track vertical">
-            <img src="images/Montage.jpg" alt="">
-            <img src="images/Montage.jpg" alt="">
-        </div>
+  <!-- SCROLLING BACKGROUND COLLAGE -->
+  <div class="collage-scroll">
+    <div class="collage-track vertical">
+      <img src="images/Montage.jpg" alt="">
+      <img src="images/Montage.jpg" alt="">
     </div>
+  </div>
 
-    <h1 class="brand" style="text-align:center; margin:40px 0 20px;">Isaac Yeo</h1>
-  <!-- TWO CARDS -->
+  <!-- HEADER TEXT -->
+  <h1 class="brand">Isaac Yeo</h1>
+
+  <!-- VIDEO BUTTONS -->
   <div class="video-buttons">
 
     <!-- SPORTS DATA CARD -->
     <div class="video-button sports">
-        <!-- the <video> goes here -->
-        <video class="bg-video" autoplay muted loop playsinline>
-            <source src="videos/sports.mp4" type="video/mp4">
-        </video>
-
-        <div class="overlay"></div>
-        <a href="spreadsheet.html" class="hero-btn">View Sports Data</a>
+      <video class="bg-video" autoplay muted loop playsinline>
+        <source src="videos/sports.mp4" type="video/mp4">
+      </video>
+      <div class="overlay"></div>
+      <a href="spreadsheet.html" class="hero-btn">View Sports Data</a>
     </div>
 
     <!-- ABOUT ME PLACEHOLDER CARD -->
