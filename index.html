@@ -113,7 +113,9 @@
 <body>
 
   <div class="navbar">
-    <a href="#" class="brand glitch-text">Isaac Yeo</a>
+    <div class="glitch-text-wrapper">
+    <a href="#" class="brand glitch-text" id="glitchName">Isaac Yeo</a>
+    </div>
     <div class="nav-links">
       <div class="dropdown">
         <button class="dropbtn">About</button>
@@ -144,6 +146,17 @@
     <h1>Welcome to My Website</h1>
     <p>This is where your content goes!</p>
   </div>
+
+  <script>
+  const glitchEl = document.getElementById("glitchName");
+
+  setInterval(() => {
+    glitchEl.classList.add("glitch-active");
+    setTimeout(() => {
+      glitchEl.classList.remove("glitch-active");
+    }, 500); // duration of the glitch animation
+  }, 10000); // every 10 seconds
+</script>
 
 </body>
 </html>
