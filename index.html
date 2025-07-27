@@ -30,7 +30,6 @@
         z-index: -1;  /* sit behind your content */
     }
 
-/* full‑screen fixed container, behind everything */
 .collage-scroll {
   position: fixed;
   top: 0; left: 0;
@@ -40,25 +39,23 @@
   z-index: -1;
 }
 
-/* track is twice as wide, flexed horizontally */
-.collage-track {
+.collage-track.vertical {
   display: flex;
-  width: 200%;    /* two images, each 100% of viewport */
-  height: 100%;
-  animation: scroll-collage 30s linear infinite;
+  flex-direction: column;  /* stack images top to bottom */
+  width: 100%;
+  height: 200%;           /* two full‑height images */
+  animation: scroll-vertical 30s linear infinite;
 }
 
-/* each img fills 50% of the track (i.e. full viewport) */
-.collage-track img {
-  width: 50%;
-  height: 100%;
+.collage-track.vertical img {
+  width: 100%;
+  height: 50%;            /* each image is half the track height */
   object-fit: cover;
 }
 
-/* keyframes to slide left by half the track (one full image) */
-@keyframes scroll-collage {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+@keyframes scroll-vertical {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-50%); }  /* move up by one image */
 }
 
     /* GRID */
@@ -129,7 +126,7 @@
 <body>
 
     <div class="collage-scroll">
-        <div class="collage-track">
+        <div class="collage-track vertical">
             <img src="images/Montage.jpg" alt="">
             <img src="images/Montage.jpg" alt="">
         </div>
