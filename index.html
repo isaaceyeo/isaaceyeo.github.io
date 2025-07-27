@@ -24,10 +24,10 @@
         top: 0; left: 0;
         width: 100vw;
         height: 100vh;
-        background: url('images/Montage.jpg') no-repeat center/cover;
-        transform-origin: center center;
-        animation: spin-bg 60s linear infinite;
-        z-index: -1;  /* sit behind your content */
+        background: url('images/Montage.jpg') no-repeat center top;
+        background-size: auto;            /* use the image’s native resolution */
+        animation: scroll-bg 60s linear infinite alternate;
+        z-index: -1;
     }
 
 .collage-scroll {
@@ -57,9 +57,9 @@
   object-fit: cover;
 }
 
-@keyframes scroll-vertical {
-  from { transform: translateY(0); }
-  to   { transform: translateY(-50%); }  /* move up by one image */
+@keyframes scroll-bg {
+  from { background-position: center top; }
+  to   { background-position: center bottom; }
 }
 
     /* GRID */
