@@ -7,39 +7,28 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background: #171717;
-      color: #fff;
-      font-family: 'Roboto', sans-serif;
-      min-height: 100vh;
       position: relative;
       overflow: hidden;
+      font-family: 'Roboto', sans-serif;
+      min-height: 100vh;
     }
 
-    /* FULL‑SCREEN SCROLLING COLLAGE */
-    .collage-scroll {
+    /* FULL‑SCREEN PANNING BACKGROUND */
+    body::before {
+      content: '';
       position: fixed;
       top: 0; left: 0;
       width: 100vw;
       height: 100vh;
-      overflow: hidden;
+      background: url('images/Montage.jpg') no-repeat center top;
+      background-size: auto;
+      animation: scroll-bg 60s linear infinite alternate;
       z-index: -1;
     }
-    .collage-track.vertical {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      height: 200%;
-      animation: scroll-vertical 30s linear infinite;
-    }
-    .collage-track.vertical img {
-      width: 100%;
-      height: 50%;
-      object-fit: cover;
-      filter: brightness(0.5);
-    }
-    @keyframes scroll-vertical {
-      from { transform: translateY(0); }
-      to   { transform: translateY(-50%); }
+
+    @keyframes scroll-bg {
+      0%   { background-position: center top; }
+      100% { background-position: center bottom; }
     }
 
     /* HEADER */
@@ -123,14 +112,6 @@
   </style>
 </head>
 <body>
-
-  <!-- SCROLLING BACKGROUND COLLAGE -->
-  <div class="collage-scroll">
-    <div class="collage-track vertical">
-      <img src="images/Montage.jpg" alt="">
-      <img src="images/Montage.jpg" alt="">
-    </div>
-  </div>
 
   <!-- HEADER TEXT -->
   <h1 class="brand">Isaac Yeo</h1>
