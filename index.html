@@ -19,18 +19,19 @@
         top: 0; left: 0;
         width: 100vw;
         height: 100vh;
-        background: url('images/Montage.jpg') no-repeat 50% 0%;
-        /* ← make the image stretch to the full viewport width */
+
+        /* Tile it vertically so it can loop seamlessly */
+        background: url('images/Montage.jpg') repeat-y center top;
         background-size: 100vw auto;
-        /* scroll the full scaled height */
-        animation: scroll-bg 60s linear infinite alternate;
+
+        /* Continuous scroll (no bounce) */
+        animation: scroll-bg 60s linear infinite;
         z-index: -1;
     }
 
-
     @keyframes scroll-bg {
-    from { background-position: 50% 0%; }    /* top of image at top of screen */
-    to   { background-position: 50% 100%; }  /* bottom of image at bottom */
+        0%   { background-position: center 0%; }
+        100% { background-position: center -100%; }
     }
 
     /* HEADER */
