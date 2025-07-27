@@ -3,160 +3,90 @@
 <head>
   <meta charset="UTF-8">
   <title>Isaac Yeo</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 
   <style>
-
+    /* ****************** */
+    /* NAME GLITCH EFFECT */
     @keyframes glitch {
-    0% {
+      0% {
         transform: none;
         text-shadow: none;
-    }
-    10% {
+      }
+      10% {
         transform: skew(1deg, -1deg);
         text-shadow: -2px 0 red, 2px 0 blue;
-    }
-    20% {
+      }
+      20% {
         transform: skew(-1deg, 1deg);
         text-shadow: -2px 0 blue, 2px 0 red;
-    }
-    30% {
+      }
+      30% {
         transform: none;
         text-shadow: none;
-    }
+      }
     }
 
     .glitch-text {
-    display: inline-block;
+      display: inline-block;
     }
 
     .glitch-active {
-    animation: glitch 0.5s steps(1, end);
+      animation: glitch 0.5s steps(1, end);
     }
-    
+    /* ****************** */
+
+
     body {
       margin: 0;
+      background-color: #000000;
       font-family: 'Roboto', sans-serif;
-      color: #ffffff; /* font color */
+      color: #ffffff;
     }
 
-    /* Navbar container */
     .navbar {
-      overflow: hidden;
       background-color: #000000;
       display: flex;
-      justify-content: space-between;
-      padding: 0 20px;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
     }
 
-    /* Navbar brand name */
     .navbar .brand {
       color: white;
       font-size: 24px;
-      line-height: 60px;
       text-decoration: none;
     }
-
-    /* Links container */
-    .navbar .nav-links {
-      display: flex;
-      align-items: center;
-    }
-
-    /* Nav items */
-    .dropdown {
-      position: relative;
-    }
-
-    .dropbtn {
-      background-color: #000000;
-      color: white;
-      padding: 20px;
-      font-size: 16px;
-      border: none;
-      cursor: pointer;
-    }
-
-    .dropbtn:hover {
-      background-color: #ffffff;
-    }
-
-    /* Dropdown content */
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: rgb(0, 0, 0);
-      min-width: 160px;
-      box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
-      z-index: 1;
-    }
-
-    .dropdown-content a {
-      color: black;
-      padding: 12px 16px;
-      text-decoration: none;
-      display: block;
-    }
-
-    .dropdown-content a:hover {
-      background-color: #f1f1f1;
-    }
-
-    /* Show dropdown on hover */
-    .dropdown:hover .dropdown-content {
-      display: block;
-    }
-
   </style>
 </head>
 <body>
 
   <div class="navbar">
-    <div class="glitch-text-wrapper">
-    <a href="#" class="brand glitch-text" id="glitchName">Isaac Yeo</a>
-    </div>
-    <div class="nav-links">
-      <div class="dropdown">
-        <button class="dropbtn">About</button>
-        <div class="dropdown-content">
-          <a href="#">My Story</a>
-          <a href="#">Resume</a>
-        </div>
-      </div>
-      <div class="dropdown">
-        <button class="dropbtn">Projects</button>
-        <div class="dropdown-content">
-          <a href="#">Websites</a>
-          <a href="#">Apps</a>
-        </div>
-      </div>
-      <div class="dropdown">
-        <button class="dropbtn">Contact</button>
-        <div class="dropdown-content">
-          <a href="#">Email</a>
-          <a href="#">LinkedIn</a>
-        </div>
-      </div>
-    </div>
+    <a href="#" class="brand glitch-text" id="glitchName">Isaac Yeo</a>   <!-- *** NAME GLITCH EFFECT *** -->
   </div>
 
-  <!-- Page content -->
+  <!-- ********* -->
+  <!-- PAGE TEXT -->
   <div style="padding: 40px; text-align: center;">
     <h1>Welcome to My Website</h1>
     <p>This is where your content goes!</p>
   </div>
+  <!-- ********* -->
 
+  <!-- ****************** -->
+  <!-- NAME GLITCH EFFECT -->
   <script>
-  const glitchEl = document.getElementById("glitchName");
+    const glitchEl = document.getElementById("glitchName");
 
-  setInterval(() => {
-    glitchEl.classList.add("glitch-active");
-    setTimeout(() => {
-      glitchEl.classList.remove("glitch-active");
-    }, 500); // duration of the glitch animation
-  }, 10000); // every 10 seconds
-</script>
+    setInterval(() => {
+      glitchEl.classList.add("glitch-active");
+      setTimeout(() => {
+        glitchEl.classList.remove("glitch-active");
+      }, 500); // glitch duration
+    }, 4000); // every 4 seconds
+  </script>
+  <!-- ****************** -->
 
 </body>
 </html>
