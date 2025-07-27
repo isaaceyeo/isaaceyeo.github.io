@@ -17,41 +17,11 @@
         height: 100%;
         padding: 0 16px;
         color: white;
-        font-size: 54px;    /* bump this up now that Bebas Neue is all‑caps */
+        font-size: 54px;
         font-weight: normal;
         text-decoration: none;
         letter-spacing: 1px;
     }
-
-    /* ****************** */
-    /* NAME GLITCH EFFECT */
-    @keyframes glitch {
-      0% {
-        transform: none;
-        text-shadow: none;
-      }
-      10% {
-        transform: skew(1deg, -1deg);
-        text-shadow: -2px 0 red, 2px 0 blue;
-      }
-      20% {
-        transform: skew(-1deg, 1deg);
-        text-shadow: -2px 0 blue, 2px 0 red;
-      }
-      30% {
-        transform: none;
-        text-shadow: none;
-      }
-    }
-
-    .glitch-text {
-      display: inline-block;
-    }
-
-    .glitch-active {
-      animation: glitch 0.5s steps(1, end);
-    }
-    /* ****************** */
 
     /* ************** */
     /* MAIN PAGE TEXT */
@@ -63,98 +33,16 @@
     }
     /* ************** */
 
-    /* ************** */
-    /* NAVIGATION BAR */
-    .banner-navbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: stretch;    /* ← stretch children to full height */
-        height: 60px;
-        padding: 0 30px;
-        background-color: #000;
-    }
-    /* ************** */
-
-    /* ******************************* */
-    /* NAVIGATION BAR LEFT (MAIN ICON) */
-    .banner-left {
-        display: flex;
-        align-items: center; 
-    }
-    /* ******************************* */
-
-    /* ****************************** */
-    /* NAVIGATION BAR RIGHT (BUTTONS) */
-    .banner-right {
-        display: flex;
-        gap: 20px;
-        height: 100%;
-    }
-    /* ****************************** */
-
-    /* ****** */
-    /* BUTTON */
-    .banner-btn {
-        background-color: #171717;
-        color: #ffffff;
-        padding: 8px 16px; /* controls button height */
-        text-decoration: none;
-        font-weight: 600;
-        transition: background-color 0.2s, color 0.2s;
-        border-radius: 0;
-        display: flex;
-        align-items: center;
-        height: auto;
-        margin-top: 6px;
-        margin-bottom: 6px;
-    }
-    /* ****** */
-
-    /* ************ */
-    /* BUTTON HOVER */
-    .banner-btn:hover {
-        background-color: #ffffff;
-        color: #171717;
-    }
-    /* ************ */
-
   </style>
 </head>
 <body>
 
-    <!-- ***************** -->
-    <!-- NAVIGATION BANNER -->
-    <div class="banner-navbar">
-        <div class="banner-left">
-            <a href="#" class="brand glitch-text" id="glitchName">ISAAC YEO</a>   <!-- *** NAME GLITCH EFFECT *** -->
-        </div>
-    <div class="banner-right">
-        <a href="#" class="banner-btn">PROJECTS</a> <!-- *** PROJECTS BUTTON *** -->
-    </div>
-    </div>
-    <!-- ***************** -->
-
   <!-- ********* -->
   <!-- PAGE TEXT -->
   <div style="padding: 40px; text-align: center;">
-    <h1>Welcome to My Website</h1>
-    <p>This is where your content goes!</p>
+    <h1>Hello, I am Isaac</h1>
   </div>
   <!-- ********* -->
-
-  <!-- ****************** -->
-  <!-- NAME GLITCH EFFECT -->
-  <script>
-    const glitchEl = document.getElementById("glitchName");
-
-    setInterval(() => {
-      glitchEl.classList.add("glitch-active");
-      setTimeout(() => {
-        glitchEl.classList.remove("glitch-active");
-      }, 500); // glitch duration
-    }, 4000); // every 4 seconds
-  </script>
-  <!-- ****************** -->
 
 </body>
 </html>
