@@ -11,28 +11,26 @@
 
 
     .brand {
-        position: relative;
-        z-index: 1;
-        font-family: 'Bebas Neue', sans-serif;
+        position: relative;     /* ← needed so ::after is positioned correctly */
         display: flex;
         align-items: center;
         height: 100%;
         padding: 0 16px;
         color: white;
-        font-size: 54px;    /* bump this up now that Bebas Neue is all‑caps */
-        font-weight: normal;
-        text-decoration: none;
+        font-size: 54px;
+        font-family: 'Bebas Neue', sans-serif;
         letter-spacing: 1px;
     }
 
     .brand::after {
         content: '';
         position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: url('images/noise.png') repeat;
-        mix-blend-mode: overlay;
-        opacity: 100;    /* tweak for more or less grain */
+        inset: 0;                         /* top:0; right:0; bottom:0; left:0; */
+        background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAACCAYAAABbayygAAAADUlEQVQImWP4z8DwHwAEqQL/XkMmeeEAAAAASUVORK5CYII=") repeat;
+        mix-blend-mode: overlay;         /* blend the noise over the text */
+        opacity: 0.15;                   /* tweak for more/less grain */
         pointer-events: none;
+        z-index: 2;
     }
 
     /* ****************** */
