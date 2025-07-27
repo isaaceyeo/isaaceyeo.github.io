@@ -13,22 +13,24 @@
       min-height: 100vh;
     }
 
-    /* FULL‑SCREEN PANNING BACKGROUND */
     body::before {
-      content: '';
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: url('images/Montage.jpg') no-repeat center top;
-      background-size: auto;
-      animation: scroll-bg 60s linear infinite alternate;
-      z-index: -1;
+        content: '';
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: url('images/Montage.jpg') no-repeat 50% 0%;
+        /* ← make the image stretch to the full viewport width */
+        background-size: 100vw auto;
+        /* scroll the full scaled height */
+        animation: scroll-bg 60s linear infinite alternate;
+        z-index: -1;
     }
 
+
     @keyframes scroll-bg {
-      0%   { background-position: center top; }
-      100% { background-position: center bottom; }
+    from { background-position: 50% 0%; }    /* top of image at top of screen */
+    to   { background-position: 50% 100%; }  /* bottom of image at bottom */
     }
 
     /* HEADER */
