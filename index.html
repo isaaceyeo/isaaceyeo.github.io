@@ -9,17 +9,14 @@
   <style>
 
     .brand {
+        display: inline-block;
+        height: 100%;            /* ← now fills the full 60px of banner-left */
+        padding: 0 16px;
         color: white;
         font-size: 26px;
         font-weight: 700;
         text-decoration: none;
         letter-spacing: 1px;
-
-        display: flex;
-        align-items: center;
-        height: 100%;      /* Takes up full navbar height */
-        padding: 0 16px;
-        box-sizing: border-box;
     }
 
     /* ****************** */
@@ -65,22 +62,20 @@
     /* ************** */
     /* NAVIGATION BAR */
     .banner-navbar {
-        background-color: #000000;
-        color: white;
         display: flex;
         justify-content: space-between;
-        align-items: center; /* ensures vertical centering */
+        align-items: stretch;    /* ← stretch children to full height */
         height: 60px;
         padding: 0 30px;
+        background-color: #000;
     }
     /* ************** */
 
     /* ******************************* */
     /* NAVIGATION BAR LEFT (MAIN ICON) */
     .banner-left {
-        height: 100%;
         display: flex;
-        align-items: stretch;
+        align-items: center; 
     }
     /* ******************************* */
 
