@@ -8,7 +8,11 @@
 
   <style>
 
+
+
     .brand {
+        position: relative;
+        z-index: 1;
         font-family: 'Bebas Neue', sans-serif;
         display: flex;
         align-items: center;
@@ -19,6 +23,16 @@
         font-weight: normal;
         text-decoration: none;
         letter-spacing: 1px;
+    }
+
+    .brand::after {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: url('images/noise.png') repeat;
+        mix-blend-mode: overlay;
+        opacity: 0.15;    /* tweak for more or less grain */
+        pointer-events: none;
     }
 
     /* ****************** */
