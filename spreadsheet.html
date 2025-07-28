@@ -1,51 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Sports Betting Data</title>
-  
+  <meta charset="UTF-8" />
+  <title>Matchups</title>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-
   <style>
     body {
       margin: 0;
-      background-color: #171717;
-      font-family: 'Roboto', sans-serif;
-      color: #ffffff;
-      text-align: center;
       padding: 40px;
+      background: #171717;
+      font-family: 'Roboto', sans-serif;
+      color: white;
     }
 
     h1 {
+      text-align: center;
       font-family: 'Bebas Neue', sans-serif;
       font-size: 48px;
+      margin-bottom: 40px;
+    }
+
+    .days-container {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+    }
+
+    .day-column {
+      width: 300px;
+    }
+
+    .day-title {
+      text-align: center;
+      font-size: 24px;
+      font-family: 'Bebas Neue', sans-serif;
       margin-bottom: 20px;
     }
 
-    p {
-      font-size: 18px;
+    .matchup-box {
+      background: #2a2a2a;
+      padding: 12px;
+      margin-bottom: 12px;
+      border-radius: 6px;
+      text-align: center;
     }
 
-    .banner-btn {
-      background-color: #171717;
-      color: #ffffff;
-      padding: 8px 16px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: background-color 0.2s, color 0.2s;
-      border-radius: 0;
-      display: inline-block;
-    }
-    .banner-btn:hover {
-      background-color: #ffffff;
-      color: #171717;
+    .matchup-box span {
+      margin: 0 5px;
     }
   </style>
 </head>
 <body>
+  <h1>Upcoming Matchups</h1>
+  <div class="days-container" id="matchupsContainer"></div>
 
-  <h1>Sports Betting Data</h1>
-  <p>Data as of July 27, 2025</p>
+  <script>
+    async function loadCSV() {
+      const response = await fetch('data.csv');
+      const text = await response.text();
 
+      const rows = text.trim().split('\n').slice(1); // skip header
+      const gamesByDate = {};
+
+      for (const row of rows) {
+        const [date, home, homeOdds, away, awayOdds] = row.split(',');
+
+        if (!gamesByDate[date]) {
+          gamesByDate[date] = [];
+        }
+
+        gamesByDate[date].push({ home, homeOdds, away, awayOdds });
+      }
+
+      const container = document.getElementById('matchupsContainer');
+      const dates = Object.keys(gamesByDate).slice(0, 3); // Only first 3 days
+
+      for (const date of dates) {
+        const column = document.createElement('div');
+        column.className = 'day-column';
+
+        const title = document.createElement('div');
+        title.className = 'day-title';
+        title.textContent = date;
+        column.appendChild(title);
+
+        for (const match of gamesByDate[date]) {
+          const box = document.createElement('div');
+          box.className = 'matchup-box';
+          box.innerHTML = `
+            <span>${match.home}</span>
+            <span>${match.homeOdds}</span>
+            <span>vs.</span>
+            <span>${match.awayOdds}</span>
+            <span>${match.away}</span>
+          `;
+          column.appendChild(box);
+        }
+
+        container.appendChild(column);
+      }
+    }
+
+    loadCSV();
+  </script>
 </body>
 </html>
