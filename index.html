@@ -1,105 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Isaac Yeo</title>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isaac Yeo</title>
 
-  <!-- fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
+    <!-- fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap"
+      rel="stylesheet"
+    />
 
-  <style>
-    /* colors */
-    :root{
-      --bg:#ffffff;
-      --text:#111111;
-      --caret:#111111;
-    }
+    <style>
+      /* colors */
+      :root {
+        --bg: #ffffff;
+        --text: #111111;
+        --caret: #111111;
+      }
 
-    /* full height */
-    html, body { height: 100%; }
+      /* full height */
+      html,
+      body {
+        height: 100%;
+      }
 
-    /* page */
-    body{
-      margin:0;
-      background:var(--bg);
-      color:var(--text);
-      font-family: 'Special Elite', monospace;
-      display:grid;
-      place-items:start center; /* top middle */
-    }
+      /* page */
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'Special Elite', monospace;
+        display: grid;
+        place-items: start center; /* top middle */
+      }
 
-    /* top */
-    header{
-      width:100%;
-      max-width:1100px;
-      padding:48px 24px 0;
-      display:flex;
-      justify-content:center;
-    }
+      /* top */
+      header {
+        width: 100%;
+        max-width: 1100px;
+        padding: 48px 24px 0;
+        display: flex;
+        justify-content: center;
+      }
 
-    /* name */
-    h1{
-      margin:0;
-      font-weight:400;
-      letter-spacing:0.02em;
-      line-height:1.1;
-      font-size:clamp(40px, 8vw, 96px);
-      white-space:nowrap;
-      position:relative;
-    }
+      /* name */
+      h1 {
+        margin: 0;
+        font-weight: 400;
+        letter-spacing: 0.02em;
+        line-height: 1.1;
+        font-size: clamp(40px, 8vw, 96px);
+        white-space: nowrap;
+        position: relative;
+      }
 
-    /* caret */
-    .caret::after{
-      content:"";
-      display:inline-block;
-      width:0.08em;
-      height:0.9em;
-      margin-left:0.08em;
-      background:var(--caret);
-      transform:translateY(0.08em);
-      animation:blink 1s step-end infinite;
-    }
+      /* caret */
+      .caret::after {
+        content: "";
+        display: inline-block;
+        width: 0.08em;
+        height: 0.9em;
+        margin-left: 0.08em;
+        background: var(--caret);
+        transform: translateY(0.08em);
+        animation: blink 1s step-end infinite;
+      }
 
-    /* blink */
-    @keyframes blink { 50% { opacity:0; } }
-
-    /* no motion */
-    @media (prefers-reduced-motion: reduce){
-      .caret::after{ animation:none; }
-    }
-  </style>
-</head>
-<body>
-  <!-- name -->
-  <header>
-    <h1 id="typewriter" class="caret" aria-label="Isaac Yeo"></h1>
-  </header>
-
-  <script>
-    // text
-    const text = "Isaac Yeo.";
-    const el = document.getElementById("typewriter");
-
-    // reduced motion
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    if (reduced){
-      // set instantly
-      el.textContent = text;
-    } else {
-      // type
-      let i = 0;
-      const speed = 120; // ms
-      function tick(){
-        if (i <= text.length){
-          el.textContent = text.slice(0, i);
-          i++;
-          setTimeout(tick, speed);
+      /* blink */
+      @keyframes blink {
+        50% {
+          opacity: 0;
         }
       }
-      tick();
-    }
-  </script>
-</body>
+
+      /* no motion */
+      @media (prefers-reduced-motion: reduce) {
+        .caret::after {
+          animation: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- name -->
+    <header>
+      <h1 id="typewriter" class="caret" aria-label="Isaac Yeo"></h1>
+    </header>
+
+    <script>
+      // text
+      const text = "Isaac Yeo.";
+      const el = document.getElementById("typewriter");
+
+      // reduced motion
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      if (reduced) {
+        // set instantly
+        el.textContent = text;
+      } else {
+        // type
+        let i = 0;
+        const speed = 120; // ms
+        function tick() {
+          if (i <= text.length) {
+            el.textContent = text.slice(0, i);
+            i++;
+            setTimeout(tick, speed);
+          } else {
+            // remove caret after typing finishes
+            el.classList.remove("caret");
+          }
+        }
+        tick();
+      }
+    </script>
+  </body>
 </html>
