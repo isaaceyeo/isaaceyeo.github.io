@@ -17,11 +17,9 @@
     }
 
     /* full height */
-    html, body {
-      height: 100%;
-    }
+    html, body { height: 100%; }
 
-    /* page style */
+    /* page */
     body {
       margin: 0;
       background: var(--bg);
@@ -31,7 +29,7 @@
       place-items: start center;
     }
 
-    /* top container */
+    /* top */
     header {
       width: 100%;
       max-width: 1100px;
@@ -40,7 +38,7 @@
       justify-content: center;
     }
 
-    /* name text */
+    /* name */
     h1 {
       margin: 0;
       font-weight: 600;
@@ -63,10 +61,8 @@
       animation: blink 1s step-end infinite;
     }
 
-    /* caret blink */
-    @keyframes blink {
-      50% { opacity: 0; }
-    }
+    /* blink */
+    @keyframes blink { 50% { opacity: 0; } }
 
     /* no motion */
     @media (prefers-reduced-motion: reduce) {
