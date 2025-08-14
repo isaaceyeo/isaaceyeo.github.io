@@ -16,31 +16,29 @@
         --caret: #111111;
       }
 
-      /* full height */
-      html,
-      body {
+      html, body {
         height: 100%;
       }
 
-      /* page */
       body {
         margin: 0;
         background: var(--bg);
         color: var(--text);
         font-family: 'Courier Prime', monospace;
-        display: grid;
-        place-items: start center; /* top middle */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
       }
 
-      /* top */
+      /* header with name + buttons stacked */
       header {
         width: 100%;
         max-width: 1100px;
-        padding: 24px 24px 0;      /* less top padding */
+        padding: 24px 24px 0;
         display: flex;
-        flex-direction: column;    /* stack name & buttons vertically */
-        align-items: center;       /* center horizontally */
-        gap: 8px;                  /* space between name and buttons */
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
       }
 
       /* name */
@@ -66,28 +64,18 @@
         animation: blink 1s step-end infinite;
       }
 
-      /* blink */
-      @keyframes blink {
-        50% {
-          opacity: 0;
-        }
-      }
+      @keyframes blink { 50% { opacity: 0; } }
 
-      /* no motion */
       @media (prefers-reduced-motion: reduce) {
-        .caret::after {
-          animation: none;
-        }
+        .caret::after { animation: none; }
       }
 
-      /* buttons container */
+      /* buttons */
       .button-row {
-        margin-top: 20px;
         display: flex;
-        gap: 60px;
+        gap: 16px;
+        margin-top: 0;
       }
-
-      /* button style */
       .simple-btn {
         font-family: inherit;
         font-size: 16px;
@@ -96,50 +84,125 @@
         background: #fff;
         color: #000;
         cursor: pointer;
-        border-radius: 0; /* hard corners */
+        border-radius: 0;
         transition: background 0.2s, color 0.2s;
       }
-
       .simple-btn:hover {
         background: #000;
         color: #fff;
       }
 
+      /* sections */
+      .section {
+        width: 100%;
+        max-width: 1100px;
+        padding: 8px 24px 0;
+      }
+      .type {
+        font-size: 18px;
+        line-height: 1.5;
+        white-space: pre-wrap;
+      }
+
+      /* highlight effect */
+      .selected {
+        background: #cde3ff;
+        color: #000;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      /* code editor */
+      .code-box {
+        margin-top: 12px;
+        font-family: 'Courier Prime', monospace;
+        font-size: 16px;
+        line-height: 1.5;
+        background: #f7f7f7;
+        border: 2px solid #000;
+        padding: 10px 12px;
+        min-height: 120px;
+        white-space: pre;
+        overflow: auto;
+      }
+
+      /* run button */
+      .run-btn {
+        margin-top: 8px;
+        font-family: inherit;
+        font-size: 15px;
+        padding: 4px 12px;
+        border: 2px solid #000;
+        background: #fff;
+        color: #000;
+        cursor: pointer;
+        border-radius: 0;
+      }
+      .run-btn:hover {
+        background: #000;
+        color: #fff;
+      }
+
+      /* terminal */
+      .terminal {
+        margin-top: 10px;
+        background: #111;
+        color: #e6e6e6;
+        padding: 10px 12px;
+        border: 2px solid #000;
+        max-height: 260px;
+        overflow: auto;
+        font-family: 'Courier Prime', monospace;
+        font-size: 15px;
+        line-height: 1.6;
+        white-space: pre-wrap;
+      }
     </style>
   </head>
   <body>
-    <!-- name -->
     <header>
       <h1 id="typewriter" class="caret" aria-label="Isaac Yeo"></h1>
       <div class="button-row">
-        <button class="simple-btn">Button 1</button>
-        <button class="simple-btn">Button 2</button>
-        <button class="simple-btn">Button 3</button>
+        <button class="simple-btn" id="btnAbout">About me</button>
+        <button class="simple-btn" id="btnLinks">My links</button>
+        <button class="simple-btn" id="btnCode">Python code</button>
       </div>
     </header>
 
+    <!-- outputs -->
+    <section id="aboutSection" class="section" aria-live="polite">
+      <div class="type" id="aboutOutput"></div>
+    </section>
+
+    <section id="linksSection" class="section" aria-live="polite">
+      <div class="type" id="linksOutput"></div>
+    </section>
+
+    <section id="codeSection" class="section hidden">
+      <div class="code-box" id="codeEditor" contenteditable="true" spellcheck="false"></div>
+      <button class="run-btn" id="runCode">Execute</button>
+      <pre class="terminal" id="terminal" hidden></pre>
+    </section>
+
     <script>
-      // text
+      // typewriter for name
       const text = "Isaac Yeo";
       const el = document.getElementById("typewriter");
-
-      // reduced motion
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       if (reduced) {
-        // set instantly
         el.textContent = text;
       } else {
-        // type
         let i = 0;
-        const speed = 120; // ms
+        const speed = 120;
         function tick() {
           if (i <= text.length) {
             el.textContent = text.slice(0, i);
             i++;
             setTimeout(tick, speed);
           } else {
-            // stop blink and set caret white
             const caretStyle = document.createElement("style");
             caretStyle.textContent = ".caret::after { animation: none; background: #ffffff; }";
             document.head.appendChild(caretStyle);
@@ -147,6 +210,108 @@
         }
         tick();
       }
+
+      // state
+      let active = null;
+      let textActiveEl = null;
+
+      // helpers
+      function typeInto(el, text, speed = 20) {
+        el.textContent = "";
+        let i = 0;
+        function step() {
+          if (i <= text.length) {
+            el.textContent = text.slice(0, i);
+            i++;
+            setTimeout(step, speed);
+          }
+        }
+        step();
+      }
+      function highlightAndDelete(el, cb) {
+        if (!el || !el.textContent) { cb && cb(); return; }
+        el.classList.add("selected");
+        setTimeout(() => {
+          el.textContent = "";
+          el.classList.remove("selected");
+          cb && cb();
+        }, 250);
+      }
+      function showCode() { codeSection.classList.remove("hidden"); }
+      function hideCode() { codeSection.classList.add("hidden"); termEl.hidden = true; codeBox.textContent = ""; }
+
+      // buttons
+      const btnAbout = document.getElementById("btnAbout");
+      const btnLinks = document.getElementById("btnLinks");
+      const btnCode  = document.getElementById("btnCode");
+
+      const aboutOut = document.getElementById("aboutOutput");
+      const linksOut = document.getElementById("linksOutput");
+      const codeBox  = document.getElementById("codeEditor");
+      const runBtn   = document.getElementById("runCode");
+      const termEl   = document.getElementById("terminal");
+      const codeSection = document.getElementById("codeSection");
+
+      // About me
+      btnAbout?.addEventListener("click", () => {
+        const text = "Hi, I’m Isaac. I once tried to center a div without flex and learned humility.\nI like clean buttons, tidy code, and coffee that types faster than I do.";
+        if (active === "code") hideCode();
+        const afterClear = () => {
+          textActiveEl = aboutOut;
+          typeInto(aboutOut, text, 15);
+          active = "about";
+        };
+        if (active === "about") {
+          highlightAndDelete(aboutOut, afterClear);
+        } else if (active === "links") {
+          highlightAndDelete(linksOut, afterClear);
+        } else {
+          afterClear();
+        }
+      });
+
+      // My links
+      btnLinks?.addEventListener("click", () => {
+        const text = "LinkedIn\n\nInstagram";
+        if (active === "code") hideCode();
+        const afterClear = () => {
+          textActiveEl = linksOut;
+          typeInto(linksOut, text, 20);
+          active = "links";
+        };
+        if (active === "links") {
+          highlightAndDelete(linksOut, afterClear);
+        } else if (active === "about") {
+          highlightAndDelete(aboutOut, afterClear);
+        } else {
+          afterClear();
+        }
+      });
+
+      // Python code
+      btnCode?.addEventListener("click", () => {
+        if (active === "about") highlightAndDelete(aboutOut, null);
+        if (active === "links") highlightAndDelete(linksOut, null);
+        showCode();
+        termEl.hidden = true;
+        const code = 'print("hello world")';
+        let i = 0;
+        (function typeCode() {
+          if (i <= code.length) {
+            codeBox.textContent = code.slice(0, i);
+            i++;
+            setTimeout(typeCode, 30);
+          }
+        })();
+        active = "code";
+      });
+
+      // Execute
+      runBtn?.addEventListener("click", () => {
+        const out = '$ python main.py\nhello world';
+        termEl.textContent = out;
+        termEl.hidden = false;
+      });
     </script>
   </body>
 </html>
