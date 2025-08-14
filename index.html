@@ -79,4 +79,27 @@
   <script>
     // text
     const text = "Isaac Yeo";
-    const el = document.getElementBy
+    const el = document.getElementById("typewriter");
+
+    // reduced motion
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (reduced){
+      // set instantly
+      el.textContent = text;
+    } else {
+      // type
+      let i = 0;
+      const speed = 90; // ms
+      function tick(){
+        if (i <= text.length){
+          el.textContent = text.slice(0, i);
+          i++;
+          setTimeout(tick, speed);
+        }
+      }
+      tick();
+    }
+  </script>
+</body>
+</html>
