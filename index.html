@@ -106,8 +106,10 @@
             i++;
             setTimeout(tick, speed);
           } else {
-            // remove caret after typing finishes
-            el.classList.remove("caret");
+            // stop blink and set caret white
+            const caretStyle = document.createElement("style");
+            caretStyle.textContent = ".caret::after { animation: none; background: #ffffff; }";
+            document.head.appendChild(caretStyle);
           }
         }
         tick();
