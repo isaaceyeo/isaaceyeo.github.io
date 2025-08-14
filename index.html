@@ -9,7 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap" rel="stylesheet">
 
     <style>
-      /* colors */
       :root {
         --bg: #ffffff;
         --text: #111111;
@@ -30,7 +29,6 @@
         align-items: center;
       }
 
-      /* header with name + buttons stacked */
       header {
         width: 100%;
         max-width: 1100px;
@@ -41,7 +39,6 @@
         gap: 8px;
       }
 
-      /* name */
       h1 {
         margin: 0;
         font-weight: 400;
@@ -52,7 +49,6 @@
         position: relative;
       }
 
-      /* caret */
       .caret::after {
         content: "";
         display: inline-block;
@@ -70,7 +66,6 @@
         .caret::after { animation: none; }
       }
 
-      /* buttons */
       .button-row {
         display: flex;
         gap: 16px;
@@ -92,7 +87,6 @@
         color: #fff;
       }
 
-      /* sections */
       .section {
         width: 100%;
         max-width: 1100px;
@@ -104,17 +98,17 @@
         white-space: pre-wrap;
       }
 
-      /* highlight effect */
-      .selected {
+      /* highlight only actual text */
+      .highlight {
         background: #cde3ff;
         color: #000;
+        display: inline;
       }
 
       .hidden {
         display: none;
       }
 
-      /* code editor */
       .code-box {
         margin-top: 12px;
         font-family: 'Courier Prime', monospace;
@@ -128,7 +122,6 @@
         overflow: auto;
       }
 
-      /* run button */
       .run-btn {
         margin-top: 8px;
         font-family: inherit;
@@ -145,7 +138,6 @@
         color: #fff;
       }
 
-      /* terminal */
       .terminal {
         margin-top: 10px;
         background: #111;
@@ -171,7 +163,6 @@
       </div>
     </header>
 
-    <!-- outputs -->
     <section id="aboutSection" class="section" aria-live="polite">
       <div class="type" id="aboutOutput"></div>
     </section>
@@ -211,11 +202,9 @@
         tick();
       }
 
-      // state
       let active = null;
       let textActiveEl = null;
 
-      // helpers
       function typeInto(el, text, speed = 20) {
         el.textContent = "";
         let i = 0;
@@ -228,19 +217,28 @@
         }
         step();
       }
+
+      // escape HTML
+      function esc(s) {
+        return s.replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;");
+      }
+
+      // highlight + delete
       function highlightAndDelete(el, cb) {
         if (!el || !el.textContent) { cb && cb(); return; }
-        el.classList.add("selected");
+        const txt = el.textContent;
+        el.innerHTML = `<span class="highlight">${esc(txt)}</span>`;
         setTimeout(() => {
           el.textContent = "";
-          el.classList.remove("selected");
           cb && cb();
         }, 250);
       }
+
       function showCode() { codeSection.classList.remove("hidden"); }
       function hideCode() { codeSection.classList.add("hidden"); termEl.hidden = true; codeBox.textContent = ""; }
 
-      // buttons
       const btnAbout = document.getElementById("btnAbout");
       const btnLinks = document.getElementById("btnLinks");
       const btnCode  = document.getElementById("btnCode");
@@ -252,7 +250,6 @@
       const termEl   = document.getElementById("terminal");
       const codeSection = document.getElementById("codeSection");
 
-      // About me
       btnAbout?.addEventListener("click", () => {
         const text = "Hi, I’m Isaac. I once tried to center a div without flex and learned humility.\nI like clean buttons, tidy code, and coffee that types faster than I do.";
         if (active === "code") hideCode();
@@ -270,7 +267,6 @@
         }
       });
 
-      // My links
       btnLinks?.addEventListener("click", () => {
         const text = "LinkedIn\n\nInstagram";
         if (active === "code") hideCode();
@@ -288,7 +284,6 @@
         }
       });
 
-      // Python code
       btnCode?.addEventListener("click", () => {
         if (active === "about") highlightAndDelete(aboutOut, null);
         if (active === "links") highlightAndDelete(linksOut, null);
@@ -306,7 +301,6 @@
         active = "code";
       });
 
-      // Execute
       runBtn?.addEventListener("click", () => {
         const out = '$ python main.py\nhello world';
         termEl.textContent = out;
