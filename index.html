@@ -120,6 +120,8 @@
         min-height: 120px;
         white-space: pre;
         overflow: auto;
+        caret-color: transparent; /* hide typing caret */
+        cursor: default;          /* normal arrow cursor */
       }
 
       .run-btn {
@@ -172,7 +174,7 @@
     </section>
 
     <section id="codeSection" class="section hidden">
-      <div class="code-box" id="codeEditor" contenteditable="true" spellcheck="false"></div>
+      <div class="code-box" id="codeEditor" spellcheck="false"></div>
       <button class="run-btn" id="runCode">Execute</button>
       <pre class="terminal" id="terminal" hidden></pre>
     </section>
@@ -203,7 +205,6 @@
       }
 
       let active = null;
-      let textActiveEl = null;
 
       function typeInto(el, text, speed = 20) {
         el.textContent = "";
@@ -250,11 +251,19 @@
       const termEl   = document.getElementById("terminal");
       const codeSection = document.getElementById("codeSection");
 
+      // block typing in codeBox
+      codeBox.addEventListener("beforeinput", (e) => e.preventDefault());
+      codeBox.addEventListener("paste", (e) => e.preventDefault());
+      codeBox.addEventListener("drop", (e) => e.preventDefault());
+
+      // About me
       btnAbout?.addEventListener("click", () => {
         const text = "Hi, I’m Isaac. I once tried to center a div without flex and learned humility.\nI like clean buttons, tidy code, and coffee that types faster than I do.";
-        if (active === "code") hideCode();
+        if (active === "code") {
+          hideCode();
+          active = null;
+        }
         const afterClear = () => {
-          textActiveEl = aboutOut;
           typeInto(aboutOut, text, 15);
           active = "about";
         };
@@ -267,11 +276,14 @@
         }
       });
 
+      // My links
       btnLinks?.addEventListener("click", () => {
         const text = "LinkedIn\n\nInstagram";
-        if (active === "code") hideCode();
+        if (active === "code") {
+          hideCode();
+          active = null;
+        }
         const afterClear = () => {
-          textActiveEl = linksOut;
           typeInto(linksOut, text, 20);
           active = "links";
         };
@@ -284,23 +296,32 @@
         }
       });
 
+      // Python code
       btnCode?.addEventListener("click", () => {
-        if (active === "about") highlightAndDelete(aboutOut, null);
-        if (active === "links") highlightAndDelete(linksOut, null);
-        showCode();
-        termEl.hidden = true;
-        const code = 'print("hello world")';
-        let i = 0;
-        (function typeCode() {
-          if (i <= code.length) {
-            codeBox.textContent = code.slice(0, i);
-            i++;
-            setTimeout(typeCode, 30);
-          }
-        })();
-        active = "code";
+        const afterClear = () => {
+          showCode();
+          termEl.hidden = true;
+          const code = 'print("hello world")';
+          let i = 0;
+          (function typeCode() {
+            if (i <= code.length) {
+              codeBox.textContent = code.slice(0, i);
+              i++;
+              setTimeout(typeCode, 30);
+            }
+          })();
+          active = "code";
+        };
+        if (active === "about") {
+          highlightAndDelete(aboutOut, afterClear);
+        } else if (active === "links") {
+          highlightAndDelete(linksOut, afterClear);
+        } else {
+          afterClear();
+        }
       });
 
+      // Execute
       runBtn?.addEventListener("click", () => {
         const out = '$ python main.py\nhello world';
         termEl.textContent = out;
