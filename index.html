@@ -77,12 +77,44 @@
           animation: none;
         }
       }
+
+      /* buttons container */
+      .button-row {
+        margin-top: 20px;
+        display: flex;
+        gap: 12px;
+      }
+
+      /* button style */
+      .simple-btn {
+        font-family: inherit;
+        font-size: 16px;
+        padding: 6px 14px;
+        border: 2px solid #000;
+        background: #fff;
+        color: #000;
+        cursor: pointer;
+        border-radius: 0; /* hard corners */
+        transition: background 0.2s, color 0.2s;
+      }
+
+      .simple-btn:hover {
+        background: #000;
+        color: #fff;
+      }
+
     </style>
   </head>
   <body>
     <!-- name -->
     <header>
       <h1 id="typewriter" class="caret" aria-label="Isaac Yeo"></h1>
+
+      <div class="button-row">
+        <button class="simple-btn">Button 1</button>
+        <button class="simple-btn">Button 2</button>
+        <button class="simple-btn">Button 3</button>
+      </div>
     </header>
 
     <script>
