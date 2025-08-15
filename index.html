@@ -284,13 +284,18 @@ I carry a similar mindset to my academics, currently pursuing a dual degree in B
 
       // My links
       btnLinks?.addEventListener("click", () => {
-        const text = "LinkedIn\n\nInstagram";
+        const text = `<a href="https://www.linkedin.com/in/isaac-yeo-5071812aa" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+
+<a href="https://www.instagram.com/isaaceyeo/" target="_blank" rel="noopener noreferrer">Instagram</a>
+
+<a href="mailto:yeox5201@mylaurier.ca">Email</a>`;
+
         if (active === "code") {
           hideCode();
           active = null;
         }
         const afterClear = () => {
-          typeInto(linksOut, text, 20);
+          typeInto(linksOut, text, 20); // innerHTML will make links clickable
           active = "links";
         };
         if (active === "links") {
