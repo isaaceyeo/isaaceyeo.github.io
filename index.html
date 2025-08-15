@@ -206,7 +206,7 @@
 
       let active = null;
 
-      function typeInto(el, text, speed = 20) {
+      function typeInto(el, text, speed = 10) {
         el.innerHTML = ""; // allow HTML to render
         let i = 0;
         (function step() {
@@ -234,7 +234,7 @@
         setTimeout(() => {
           el.textContent = "";
           cb && cb();
-        }, 250);
+        }, 500);
       }
 
       function showCode() { codeSection.classList.remove("hidden"); }
@@ -269,7 +269,7 @@ I carry a similar mindset to my academics, currently pursuing a dual degree in B
           active = null;
         }
         const afterClear = () => {
-          typeInto(aboutOut, text, 15); // <-- will now render the <a> link
+          typeInto(aboutOut, text, 8); // <-- will now render the <a> link
           active = "about";
         };
         if (active === "about") {
@@ -295,7 +295,7 @@ I carry a similar mindset to my academics, currently pursuing a dual degree in B
           active = null;
         }
         const afterClear = () => {
-          typeInto(linksOut, text, 20); // innerHTML will make links clickable
+          typeInto(linksOut, text, 10); // innerHTML will make links clickable
           active = "links";
         };
         if (active === "links") {
