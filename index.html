@@ -336,7 +336,17 @@ I carry a similar mindset to my academics, currently pursuing a dual degree in B
         const afterClear = () => {
           showCode();
           termEl.hidden = true;
-          const code = 'print(isaacs_face)';
+          const code = 
+`# Imports
+from beautiful_faces import isaacs_face
+
+# Functions
+def main():
+    print(isaacs_face)
+
+# Main
+if __name__ == "__main__":
+    main()`;
           let i = 0;
           (function typeCode() {
             if (i <= code.length) {
