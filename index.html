@@ -207,11 +207,11 @@
       let active = null;
 
       function typeInto(el, text, speed = 20) {
-        el.textContent = "";
+        el.innerHTML = "";
         let i = 0;
         function step() {
           if (i <= text.length) {
-            el.textContent = text.slice(0, i);
+            el.innerHTML = text.slice(0, i);
             i++;
             setTimeout(step, speed);
           }
@@ -278,7 +278,12 @@
 
       // My links
       btnLinks?.addEventListener("click", () => {
-        const text = "LinkedIn\n\nInstagram";
+        const text = `<a href="https://www.linkedin.com/in/isaac-yeo-5071812aa" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        
+      <a href="https://www.instagram.com/isaaceyeo/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        
+      <a href="mailto:yeox5201@mylaurier.ca">Email</a>`;
+        
         if (active === "code") {
           hideCode();
           active = null;
