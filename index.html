@@ -207,16 +207,20 @@
 
       let active = null;
       let typingStop = false;
+      let typingTimer = null;
 
       function typeInto(el, text, speed = 10) {
-        typingStop = false; // reset stop flag when starting new typing
+        typingStop = false;                 // new typing run
+        if (typingTimer) clearTimeout(typingTimer); // cancel any old step
         el.innerHTML = "";
+
         let i = 0;
         (function step() {
-          if (typingStop) return; // stop immediately if another button was clicked
+          if (typingStop) return; // immediately halt if a button was clicked
+
           if (i < text.length) {
             if (text[i] === "<") {
-              // If it's an <a ...>...</a>, insert the whole link instantly
+              // Drop full <a>...</a> instantly; other tags drop as a full tag
               if (text.slice(i, i + 2).toLowerCase() === "<a") {
                 const close = text.indexOf("</a>", i);
                 if (close !== -1) {
@@ -235,7 +239,7 @@
             } else {
               el.innerHTML += text[i++];
             }
-            setTimeout(step, speed);
+            typingTimer = setTimeout(step, speed);
           }
         })();
       }
@@ -280,6 +284,7 @@
 
       // About me
       btnAbout?.addEventListener("click", () => {
+        typingStop = true;
         const text = `Hi, I’m Isaac.
 
 I would describe myself as an experienced and dependable leader with an innate ability to stay organized, and a proven history of keeping operations running smoothly. During my time with <a href="https://www.mosquito.buzz/buzz-history" target="_blank" rel="noopener noreferrer">mosquito.buzz</a>, I managed operations across New Brunswick and Nova Scotia, leading a small team, handling budgets, and making sure work got done on time and to a high standard — even when the clock wasn’t on my side. I’m passionate about building and sharing a strong team culture, running events, and creating an environment where members genuinely feel proud to be part of the team.
