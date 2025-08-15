@@ -206,27 +206,28 @@
       }
 
       let active = null;
+      let typingStop = false;
 
       function typeInto(el, text, speed = 10) {
+        typingStop = false; // reset stop flag when starting new typing
         el.innerHTML = "";
         let i = 0;
         (function step() {
+          if (typingStop) return; // stop immediately if another button was clicked
           if (i < text.length) {
             if (text[i] === "<") {
-              // If it's an <a ...>...</a>, insert the WHOLE link at once.
+              // If it's an <a ...>...</a>, insert the whole link instantly
               if (text.slice(i, i + 2).toLowerCase() === "<a") {
                 const close = text.indexOf("</a>", i);
                 if (close !== -1) {
                   el.innerHTML += text.slice(i, close + 4);
                   i = close + 4;
                 } else {
-                  // malformed link; fall back to single-tag skip
                   const end = text.indexOf(">", i);
                   el.innerHTML += text.slice(i, end !== -1 ? end + 1 : i + 1);
                   i = end !== -1 ? end + 1 : i + 1;
                 }
               } else {
-                // Any other HTML tag: insert the whole tag instantly
                 const end = text.indexOf(">", i);
                 el.innerHTML += text.slice(i, end !== -1 ? end + 1 : i + 1);
                 i = end !== -1 ? end + 1 : i + 1;
@@ -305,6 +306,7 @@ I carry a similar mindset to my academics, currently pursuing a dual degree in B
 
       // My links
       btnLinks?.addEventListener("click", () => {
+        typingStop = true;
         const text = `<a href="https://www.linkedin.com/in/isaac-yeo-5071812aa" target="_blank" rel="noopener noreferrer">LinkedIn</a>
 
 <a href="https://www.instagram.com/isaaceyeo/" target="_blank" rel="noopener noreferrer">Instagram</a>
@@ -330,6 +332,7 @@ I carry a similar mindset to my academics, currently pursuing a dual degree in B
 
       // Python code
       btnCode?.addEventListener("click", () => {
+        typingStop = true;
         const afterClear = () => {
           showCode();
           termEl.hidden = true;
@@ -355,6 +358,7 @@ I carry a similar mindset to my academics, currently pursuing a dual degree in B
 
       // Execute
       runBtn?.addEventListener("click", () => {
+        typingStop = true;
         termEl.textContent = '$ python main.py\n' + ASCII_FACE + '\n';
         termEl.hidden = false;
         termEl.scrollTop = termEl.scrollHeight; // keep newest output in view
@@ -363,6 +367,7 @@ I carry a similar mindset to my academics, currently pursuing a dual degree in B
       // Project button
       const btnProject = document.getElementById("btnProject");
       btnProject?.addEventListener("click", () => {
+        typingStop = true;
         window.location.href = "nhl.html"; 
       });
 
