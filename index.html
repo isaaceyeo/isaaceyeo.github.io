@@ -295,7 +295,7 @@ I carry a similar mindset to my academics, currently pursuing a dual degree in B
           active = null;
         }
         const afterClear = () => {
-          typeInto(linksOut, text, 10); // innerHTML will make links clickable
+          typeInto(linksOut, text, 0); // innerHTML will make links clickable
           active = "links";
         };
         if (active === "links") {
