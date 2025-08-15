@@ -149,9 +149,9 @@
         max-height: 260px;
         overflow: auto;
         font-family: 'Courier Prime', monospace;
-        font-size: 15px;
-        line-height: 1.6;
-        white-space: pre-wrap;
+        font-size: 10px;   /* smaller text for ASCII art */
+        line-height: 1.1;  /* tighter spacing between lines */
+        white-space: pre;  /* keep exact ASCII formatting */
       }
     </style>
   </head>
@@ -301,7 +301,7 @@
         const afterClear = () => {
           showCode();
           termEl.hidden = true;
-          const code = 'print("hello world")';
+          const code = 'print(isaacs_face)';
           let i = 0;
           (function typeCode() {
             if (i <= code.length) {
