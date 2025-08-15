@@ -109,6 +109,21 @@
         display: none;
       }
 
+      .code-box {
+        margin-top: 12px;
+        font-family: 'Courier Prime', monospace;
+        font-size: 16px;
+        line-height: 1.5;
+        background: #f7f7f7;
+        border: 2px solid #000;
+        padding: 10px 12px;
+        min-height: 120px;
+        white-space: pre;
+        overflow: auto;
+        caret-color: transparent; /* hide typing caret */
+        cursor: default;          /* normal arrow cursor */
+      }
+
       .run-btn {
         margin-top: 8px;
         font-family: inherit;
@@ -125,38 +140,8 @@
         color: #fff;
       }
 
-      #codeSection {
-        display: flex;
-        gap: 16px;               /* space between editor and terminal */
-        align-items: flex-start; /* align tops */
-      }
-
-      .code-area {
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-        min-width: 250px;
-      }
-
-      .code-box {
-        flex: 1;
-        margin-top: 12px;
-        font-family: 'Courier Prime', monospace;
-        font-size: 16px;
-        line-height: 1.5;
-        background: #f7f7f7;
-        border: 2px solid #000;
-        padding: 10px 12px;
-        min-height: 120px;
-        white-space: pre;
-        overflow: auto;
-        caret-color: transparent;
-        cursor: default;
-      }
-
       .terminal {
-        flex: 1;
-        margin-top: 12px;
+        margin-top: 10px;
         background: #111;
         color: #e6e6e6;
         padding: 10px 12px;
@@ -164,13 +149,10 @@
         max-height: 260px;
         overflow: auto;
         font-family: 'Courier Prime', monospace;
-        font-size: 10px;   /* smaller text for ASCII */
-        line-height: 1.1;  /* tighter spacing */
-        white-space: pre;  /* keep exact ASCII layout */
-        min-width: 250px;
+        font-size: 10px;   /* smaller text for ASCII art */
+        line-height: 1.1;  /* tighter spacing between lines */
+        white-space: pre;  /* keep exact ASCII formatting */
       }
-
-
     </style>
   </head>
   <body>
@@ -192,10 +174,8 @@
     </section>
 
     <section id="codeSection" class="section hidden">
-      <div class="code-area">
-        <div class="code-box" id="codeEditor" spellcheck="false"></div>
-        <button class="run-btn" id="runCode">Execute</button>
-      </div>
+      <div class="code-box" id="codeEditor" spellcheck="false"></div>
+      <button class="run-btn" id="runCode">Execute</button>
       <pre class="terminal" id="terminal" hidden></pre>
     </section>
 
