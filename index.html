@@ -207,12 +207,23 @@
       let active = null;
 
       function typeInto(el, text, speed = 10) {
-        el.innerHTML = ""; // allow HTML to render
+        el.innerHTML = "";
         let i = 0;
         (function step() {
-          if (i <= text.length) {
-            el.innerHTML = text.slice(0, i); // render typed HTML
-            i++;
+          if (i < text.length) {
+            if (text[i] === "<") {
+              // find the end of this HTML tag
+              const end = text.indexOf(">", i);
+              if (end !== -1) {
+                el.innerHTML += text.slice(i, end + 1); // instantly add whole tag
+                i = end + 1;
+              } else {
+                // malformed tag, just type normally
+                el.innerHTML += text[i++];
+              }
+            } else {
+              el.innerHTML += text[i++];
+            }
             setTimeout(step, speed);
           }
         })();
