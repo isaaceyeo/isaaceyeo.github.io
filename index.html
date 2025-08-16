@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Isaac Yeo</title>
 
-    <!-- fonts -->
+    <!-- Inter font -->
     <link rel="preconnect" href="https://rsms.me/">
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 
@@ -14,29 +14,10 @@
         --bg: #efefef;
         --text: #333333;
         --caret: #333333;
-        --line: #222222; /* faint divider line */
-        font-family: Inter, sans-serif;
-        font-feature-settings: 'liga' 1, 'calt' 1;
+        --line: #cccccc; /* faint divider */
       }
 
-      @supports (font-variation-settings: normal) {
-        :root {
-          font-family: InterVariable, sans-serif;
-        }
-      }
-
-      .divider {
-        width: 100%;
-        height: 1px;
-        background: var(--line); /* uses the gray from your variables */
-        margin-top: 16px;
-        margin-bottom: 16px;
-      }
-
-      html, body {
-        height: 100%;
-      }
-
+      html, body { height: 100%; }
       body {
         margin: 0;
         background: var(--bg);
@@ -47,22 +28,43 @@
         align-items: center;
       }
 
+      /* HEADER = top-left nav, huge title, divider */
       header {
         width: 100%;
         max-width: 1100px;
         padding: 24px 24px 0;
         display: flex;
         flex-direction: column;
-        align-items: center;
-        gap: 8px;
+        align-items: flex-start; /* push content to the left */
+        gap: 12px;
       }
 
+      /* Top-left text links */
+      .button-row {
+        display: flex;
+        gap: 18px;
+        margin: 0;
+        align-self: flex-start;
+      }
+      .simple-btn {
+        background: none;
+        border: none;
+        padding: 0;
+        font: inherit;               /* use Inter */
+        color: var(--text);
+        cursor: pointer;
+        letter-spacing: 0.01em;
+      }
+      .simple-btn:hover { text-decoration: underline; }
+      .simple-btn:focus { outline: none; text-decoration: underline; }
+
+      /* Huge, bold name like the Inter site hero */
       h1 {
         margin: 0;
-        font-weight: 600;
-        letter-spacing: 0.02em;
-        line-height: 1.1;
-        font-size: clamp(40px, 8vw, 96px);
+        font-weight: 800;                 /* thicker */
+        letter-spacing: -0.015em;
+        line-height: 0.95;
+        font-size: clamp(64px, 12vw, 160px);
         white-space: nowrap;
         position: relative;
       }
@@ -77,59 +79,35 @@
         transform: translateY(0.08em);
         animation: blink 1s step-end infinite;
       }
-
       @keyframes blink { 50% { opacity: 0; } }
+      @media (prefers-reduced-motion: reduce) { .caret::after { animation: none; } }
 
-      @media (prefers-reduced-motion: reduce) {
-        .caret::after { animation: none; }
-      }
-
-      .button-row {
-        display: flex;
-        gap: 16px;
-        margin-top: 0;
-      }
-      .simple-btn {
-        font-family: Inter, sans-serif;
-        font-size: 16px;
-        padding: 3px 14px;
-        border: 2px solid #333;
-        background: #efefef;
-        color: #333;
-        cursor: pointer;
-        border-radius: 0;
-        transition: background 0.2s, color 0.2s;
-      }
-      .simple-btn:hover {
-        background: #333;
-        color: #efefef;
+      .divider {
+        width: 100%;
+        height: 1px;
+        background: var(--line);
+        margin-top: 6px;          /* title → line spacing */
+        margin-bottom: 18px;      /* line → content spacing */
       }
 
       .section {
         width: 100%;
         max-width: 1100px;
-        padding: 8px 24px 0;
+        padding: 0 24px 0;
       }
       .type {
         font-size: 18px;
-        line-height: 1.5;
+        line-height: 1.55;
         white-space: pre-wrap;
       }
 
-      /* highlight only actual text */
-      .highlight {
-        background: #cde3ff;
-        color: #333;
-        display: inline;
-      }
+      .highlight { background: #cde3ff; color: #333; display: inline; }
+      .hidden { display: none; }
 
-      .hidden {
-        display: none;
-      }
-
+      /* Code + terminal (Menlo for code look) */
       .code-box {
         margin-top: 12px;
-        font-family: Inter, sans-serif;
+        font-family: Menlo, monospace;
         font-size: 16px;
         line-height: 1.5;
         background: #f7f7f7;
@@ -138,25 +116,21 @@
         min-height: 120px;
         white-space: pre;
         overflow: auto;
-        caret-color: transparent; /* hide typing caret */
-        cursor: default;          /* normal arrow cursor */
+        caret-color: transparent;
+        cursor: default;
       }
-
       .run-btn {
         margin-top: 8px;
-        font-family: Inter, sans-serif;
+        font: inherit;
         font-size: 15px;
-        padding: 4px 12px;
-        border: 2px solid #000;
-        background: #fff;
-        color: #000;
+        padding: 0;                      /* plain-text look */
+        border: none;
+        background: none;
+        color: var(--text);
         cursor: pointer;
-        border-radius: 0;
+        text-decoration: underline;      /* make it feel like a link */
       }
-      .run-btn:hover {
-        background: #000;
-        color: #fff;
-      }
+      .run-btn:hover { opacity: 0.75; }
 
       .terminal {
         margin-top: 10px;
@@ -167,24 +141,30 @@
         max-height: 260px;
         overflow: auto;
         font-family: Menlo, monospace;
-        font-size: 10px;   /* smaller text for ASCII art */
-        line-height: 1.1;  /* tighter spacing between lines */
-        white-space: pre;  /* keep exact ASCII formatting */
+        font-size: 12px;
+        line-height: 1.3;
+        white-space: pre;
       }
     </style>
   </head>
   <body>
     <header>
-      <h1 id="typewriter" class="caret" aria-label="Isaac Yeo"></h1>
-      <div class="divider"></div> <!-- thin gray line -->
+      <!-- TOP-LEFT TEXT LINKS -->
       <div class="button-row">
         <button class="simple-btn" id="btnAbout">About me</button>
         <button class="simple-btn" id="btnLinks">My links</button>
         <button class="simple-btn" id="btnProject">Current Project</button>
         <button class="simple-btn" id="btnCode">Self Portrait</button>
       </div>
+
+      <!-- BIG NAME -->
+      <h1 id="typewriter" class="caret" aria-label="Isaac Yeo"></h1>
+
+      <!-- FAINT LINE -->
+      <div class="divider"></div>
     </header>
 
+    <!-- CONTENT BELOW THE NAME -->
     <section id="aboutSection" class="section" aria-live="polite">
       <div class="type" id="aboutOutput"></div>
     </section>
@@ -217,7 +197,7 @@
             setTimeout(tick, speed);
           } else {
             const caretStyle = document.createElement("style");
-            caretStyle.textContent = ".caret::after { animation: none; background: #efefef; }";
+            caretStyle.textContent = ".caret::after { animation: none; background: var(--bg); }";
             document.head.appendChild(caretStyle);
           }
         }
@@ -229,17 +209,14 @@
       let typingTimer = null;
 
       function typeInto(el, text, speed = 10) {
-        typingStop = false;                 // new typing run
-        if (typingTimer) clearTimeout(typingTimer); // cancel any old step
+        typingStop = false;
+        if (typingTimer) clearTimeout(typingTimer);
         el.innerHTML = "";
-
         let i = 0;
         (function step() {
-          if (typingStop) return; // immediately halt if a button was clicked
-
+          if (typingStop) return;
           if (i < text.length) {
             if (text[i] === "<") {
-              // Drop full <a>...</a> instantly; other tags drop as a full tag
               if (text.slice(i, i + 2).toLowerCase() === "<a") {
                 const close = text.indexOf("</a>", i);
                 if (close !== -1) {
@@ -263,23 +240,15 @@
         })();
       }
 
-
-      // escape HTML
       function esc(s) {
-        return s.replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;");
+        return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
       }
 
-      // highlight + delete
       function highlightAndDelete(el, cb) {
         if (!el || !el.textContent) { cb && cb(); return; }
         const txt = el.textContent;
         el.innerHTML = `<span class="highlight">${esc(txt)}</span>`;
-        setTimeout(() => {
-          el.textContent = "";
-          cb && cb();
-        }, 500);
+        setTimeout(() => { el.textContent = ""; cb && cb(); }, 500);
       }
 
       function showCode() { codeSection.classList.remove("hidden"); }
@@ -288,6 +257,7 @@
       const btnAbout = document.getElementById("btnAbout");
       const btnLinks = document.getElementById("btnLinks");
       const btnCode  = document.getElementById("btnCode");
+      const btnProject = document.getElementById("btnProject");
 
       const aboutOut = document.getElementById("aboutOutput");
       const linksOut = document.getElementById("linksOutput");
@@ -310,23 +280,12 @@ I am an experienced and dependable leader with an innate ability to stay organiz
 
 I carry a similar mindset to my academics, currently pursuing a dual degree in Business Administration and Computer Science at Wilfrid Laurier University. Balancing two degrees is challenging, but the effort and commitment I’ve contributed has made me proud of my achievements and taught me to manage my time and stay focused. I’m learning how to apply analytical, creative, and technical skills to solve real-world problems, and I’m passionate about combining my interests in technology and business to contribute to an innovative future.`;
 
-        if (active === "code") {
-          hideCode();
-          active = null;
-        }
-        const afterClear = () => {
-          typeInto(aboutOut, text, 8); // <-- will now render the <a> link
-          active = "about";
-        };
-        if (active === "about") {
-          highlightAndDelete(aboutOut, afterClear);
-        } else if (active === "links") {
-          highlightAndDelete(linksOut, afterClear);
-        } else {
-          afterClear();
-        }
+        if (active === "code") { hideCode(); active = null; }
+        const afterClear = () => { typeInto(aboutOut, text, 8); active = "about"; };
+        if (active === "about")       { highlightAndDelete(aboutOut, afterClear); }
+        else if (active === "links")  { highlightAndDelete(linksOut, afterClear); }
+        else                          { afterClear(); }
       });
-
 
       // My links
       btnLinks?.addEventListener("click", () => {
@@ -337,30 +296,20 @@ I carry a similar mindset to my academics, currently pursuing a dual degree in B
 
 <a href="mailto:yeox5201@mylaurier.ca">Email</a>`;
 
-        if (active === "code") {
-          hideCode();
-          active = null;
-        }
-        const afterClear = () => {
-          typeInto(linksOut, text, 0); // innerHTML will make links clickable
-          active = "links";
-        };
-        if (active === "links") {
-          highlightAndDelete(linksOut, afterClear);
-        } else if (active === "about") {
-          highlightAndDelete(aboutOut, afterClear);
-        } else {
-          afterClear();
-        }
+        if (active === "code") { hideCode(); active = null; }
+        const afterClear = () => { typeInto(linksOut, text, 0); active = "links"; };
+        if (active === "links")      { highlightAndDelete(linksOut, afterClear); }
+        else if (active === "about") { highlightAndDelete(aboutOut, afterClear); }
+        else                          { afterClear(); }
       });
 
-      // Python code
+      // Self Portrait (code)
       btnCode?.addEventListener("click", () => {
         typingStop = true;
         const afterClear = () => {
           showCode();
           termEl.hidden = true;
-          const code = 
+          const code =
 `# Imports
 from beautiful_faces import isaacs_face
 
@@ -380,13 +329,9 @@ if __name__ == "__main__":
           })();
           active = "code";
         };
-        if (active === "about") {
-          highlightAndDelete(aboutOut, afterClear);
-        } else if (active === "links") {
-          highlightAndDelete(linksOut, afterClear);
-        } else {
-          afterClear();
-        }
+        if (active === "about") { highlightAndDelete(aboutOut, afterClear); }
+        else if (active === "links") { highlightAndDelete(linksOut, afterClear); }
+        else { afterClear(); }
       });
 
       // Execute
@@ -394,16 +339,16 @@ if __name__ == "__main__":
         typingStop = true;
         termEl.textContent = '$ python main.py\n' + ASCII_FACE + '\n';
         termEl.hidden = false;
-        termEl.scrollTop = termEl.scrollHeight; // keep newest output in view
+        termEl.scrollTop = termEl.scrollHeight;
       });
 
-      // Project button
-      const btnProject = document.getElementById("btnProject");
+      // Current Project → navigate
       btnProject?.addEventListener("click", () => {
         typingStop = true;
-        window.location.href = "nhl.html"; 
+        window.location.href = "nhl.html";
       });
 
+      // ASCII
       const ASCII_FACE = String.raw`:+***+-:...........................:..:. .=****######%##%%**%%%%%%%#%%%*%%%%%%#%%#%%%%%%%%%%%%%%%%%%
 .:=-::::.................::::-==++++.....-####*###%%%%#%%%**%%%%%%%%%%%*%%%%%%#%%#%%%%%%%%%%%%%%%%%%
 ...    .................::==+#####+:....:*####*%##%%%%%%%%**%%%%%%%%%%%*%%%%%%#%%#%%%%%%%%%%%%%%%%%%
