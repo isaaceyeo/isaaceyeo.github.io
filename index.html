@@ -99,13 +99,16 @@
         max-width: 1100px;
         padding: 0 24px 0;
       }
-      .type {
-        font-size: 18px;
-        line-height: 1.5;
-        white-space: pre-wrap;
-        column-count: 2;      /* number of columns */
-        column-gap: 40px;     /* space between columns */
-      }
+    .type {
+      display: flex;
+      gap: 40px;            /* space between the two columns */
+      align-items: flex-start;
+    }
+
+    .type p {
+      flex: 1;              /* each takes 50% width */
+      margin: 0;
+    }
 
       .highlight { background: #cde3ff; color: #333; display: inline; }
       .hidden { display: none; }
@@ -280,11 +283,11 @@
       // About me
       btnAbout?.addEventListener("click", () => {
         typingStop = true;
-        const text = `Hi, I’m Isaac.
+        const text = `
+<p>Hi, I’m Isaac.\n\nI am an experienced and dependable leader with an innate ability to stay organized, and a proven history of keeping operations running smoothly. During my time with <a href="https://www.mosquito.buzz/" target="_blank" rel="noopener noreferrer">mosquito.buzz</a>, I managed operations across New Brunswick and Nova Scotia, leading a small team, handling budgets, and making sure work got done on time and to a high standard — even when the clock wasn’t on my side. I’m passionate about building and sharing a strong team culture, running events, and creating an environment where members genuinely feel proud to be part of the team.</p>
 
-I am an experienced and dependable leader with an innate ability to stay organized, and a proven history of keeping operations running smoothly. During my time with <a href="https://www.mosquito.buzz/buzz-history" target="_blank" rel="noopener noreferrer">mosquito.buzz</a>, I managed operations across New Brunswick and Nova Scotia, leading a small team, handling budgets, and making sure work got done on time and to a high standard — even when the clock wasn’t on my side. I’m passionate about building and sharing a strong team culture, running events, and creating an environment where members genuinely feel proud to be part of the team.
-
-I carry a similar mindset to my academics, currently pursuing a dual degree in Business Administration and Computer Science at Wilfrid Laurier University. Balancing two degrees is challenging, but the effort and commitment I’ve contributed has made me proud of my achievements and taught me to manage my time and stay focused. I’m learning how to apply analytical, creative, and technical skills to solve real-world problems, and I’m passionate about combining my interests in technology and business to contribute to an innovative future.`;
+<p>I carry a similar mindset to my academics, currently pursuing a dual degree in Business Administration and Computer Science at Wilfrid Laurier University. Balancing two degrees is challenging, but the effort and commitment I’ve contributed has made me proud of my achievements and taught me to manage my time and stay focused. I’m learning how to apply analytical, creative, and technical skills to solve real-world problems, and I’m passionate about combining my interests in technology and business to contribute to an innovative future.</p>
+`;
 
         if (active === "code") { hideCode(); active = null; }
         const afterClear = () => { typeInto(aboutOut, text, 8); active = "about"; };
