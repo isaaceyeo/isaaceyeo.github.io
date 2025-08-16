@@ -15,6 +15,14 @@
         --text: #333333;
         --caret: #333333;
         --line: #222222; /* faint divider line */
+        font-family: Inter, sans-serif;
+        font-feature-settings: 'liga' 1, 'calt' 1;
+      }
+
+      @supports (font-variation-settings: normal) {
+        :root {
+          font-family: InterVariable, sans-serif;
+        }
       }
 
       .divider {
