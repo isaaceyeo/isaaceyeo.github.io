@@ -270,14 +270,18 @@
 
       let active = null;
       let typingStop = false;
-      let typingTimer = null;
+      const timers = new WeakMap();
 
       function typeInto(el, s, speed = 10) {
         typingStop = false;
-        if (typingTimer) clearTimeout(typingTimer);
-        el.innerHTML = "";
 
+        // clear any prior timer for THIS element
+        const prev = timers.get(el);
+        if (prev) clearTimeout(prev);
+
+        el.innerHTML = "";
         let i = 0;
+
         (function step() {
           if (typingStop) return;
           if (i >= s.length) return;
@@ -302,7 +306,9 @@
           } else {
             el.innerHTML += s[i++];
           }
-          typingTimer = setTimeout(step, speed);
+
+          const t = setTimeout(step, speed);
+          timers.set(el, t); // store THIS element’s timer
         })();
       }
 
@@ -311,11 +317,16 @@
       }
 
       function highlightAndDelete(el, cb) {
+        // stop this element’s typer if running
+        const prev = timers.get(el);
+        if (prev) clearTimeout(prev);
+
         if (!el || !el.textContent) { cb && cb(); return; }
         const txt = el.textContent;
         el.innerHTML = `<span class="highlight">${esc(txt)}</span>`;
         setTimeout(() => { el.textContent = ""; cb && cb(); }, 500);
       }
+
 
       function showCode() { codeSection.classList.remove("hidden"); }
       function hideCode() { codeSection.classList.add("hidden"); termEl.hidden = true; codeBox.textContent = ""; }
