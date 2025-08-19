@@ -282,35 +282,38 @@
         el.innerHTML = "";
         let i = 0;
 
-        (function step() {
-          if (typingStop) return;
-          if (i >= s.length) return;
+        return new Promise((resolve) => {
+          (function step() {
+            if (typingStop) return resolve("aborted");
+            if (i >= s.length) return resolve();
 
-          if (s[i] === "<") {
-            // If it's an <a>…</a>, drop the whole thing instantly (prevents weird gaps)
-            if (s.slice(i, i + 2).toLowerCase() === "<a") {
-              const close = s.indexOf("</a>", i);
-              if (close !== -1) {
-                el.innerHTML += s.slice(i, close + 4);
-                i = close + 4;
+            if (s[i] === "<") {
+              // If it's an <a>…</a>, drop the whole thing instantly (prevents weird gaps)
+              if (s.slice(i, i + 2).toLowerCase() === "<a") {
+                const close = s.indexOf("</a>", i);
+                if (close !== -1) {
+                  el.innerHTML += s.slice(i, close + 4);
+                  i = close + 4;
+                } else {
+                  const end = s.indexOf(">", i);
+                  el.innerHTML += s.slice(i, end !== -1 ? end + 1 : i + 1);
+                  i = end !== -1 ? end + 1 : i + 1;
+                }
               } else {
                 const end = s.indexOf(">", i);
                 el.innerHTML += s.slice(i, end !== -1 ? end + 1 : i + 1);
                 i = end !== -1 ? end + 1 : i + 1;
               }
             } else {
-              const end = s.indexOf(">", i);
-              el.innerHTML += s.slice(i, end !== -1 ? end + 1 : i + 1);
-              i = end !== -1 ? end + 1 : i + 1;
+              el.innerHTML += s[i++];
             }
-          } else {
-            el.innerHTML += s[i++];
-          }
 
-          const t = setTimeout(step, speed);
-          timers.set(el, t); // store THIS element’s timer
-        })();
+            const t = setTimeout(step, speed);
+            timers.set(el, t); // store THIS element’s timer
+          })();
+        });
       }
+
 
       function esc(s) {
         return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -360,15 +363,24 @@
         const rightHTML =
       `I carry a similar mindset to my academics, currently pursuing a dual degree in Business Administration and Computer Science at Wilfrid Laurier University. Balancing two degrees is challenging, but the effort and commitment I’ve contributed has made me proud of my achievements and taught me to manage my time and stay focused. I’m learning how to apply analytical, creative, and technical skills to solve real-world problems, and I’m passionate about combining my interests in technology and business to contribute to an innovative future.`;
 
-        const afterClear = () => {
-          // two fixed columns
-          aboutOut.innerHTML = `
-            <div class="col" id="aboutL"></div>
-            <div class="col" id="aboutR"></div>`;
-          typeInto(document.getElementById("aboutL"), leftHTML, 8);
-          typeInto(document.getElementById("aboutR"), rightHTML, 8);
-          active = "about";
-        };
+      const afterClear = () => {
+        // two fixed columns
+        aboutOut.innerHTML = `
+          <div class="col" id="aboutL"></div>
+          <div class="col" id="aboutR"></div>`;
+
+        const leftEl  = document.getElementById("aboutL");
+        const rightEl = document.getElementById("aboutR");
+
+        // type RIGHT only after LEFT finishes
+        typeInto(leftEl, leftHTML, 8).then(() => {
+          // If we were aborted by a section switch, don’t start the right column
+          if (typingStop) return;
+          return typeInto(rightEl, rightHTML, 8);
+        });
+
+        active = "about";
+      };
 
         if (active === "about")       { highlightAndDelete(aboutOut, afterClear); }
         else if (active === "links")  { highlightAndDelete(linksOut, afterClear); }
