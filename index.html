@@ -371,38 +371,45 @@
         typingStop = true;
         if (active === "code") { hideCode(); active = null; }
 
-      const leftHTML = `
-      <p>Hi, I’m Isaac.</p>
-      <p>I am an experienced and dependable leader with an innate ability to stay organized, and a proven history of keeping operations running smoothly. During my time with <a href="https://www.mosquito.buzz/buzz-history" target="_blank" rel="noopener noreferrer">mosquito.buzz</a>, I managed operations across New Brunswick and Nova Scotia, leading a small team, handling budgets, and making sure work got done on time and to a high standard — even when the clock wasn’t on my side. I’m passionate about building and sharing a strong team culture, running events, and creating an environment where members genuinely feel proud to be part of the team.</p>`;
+        const leftText = `Hi, I’m Isaac.
 
-      const rightHTML = `
-      <p>I carry a similar mindset to my academics, currently pursuing a dual degree in Business Administration and Computer Science at Wilfrid Laurier University. Balancing two degrees is challenging, but the effort and commitment I’ve contributed has made me proud of my achievements and taught me to manage my time and stay focused. I’m learning how to apply analytical, creative, and technical skills to solve real-world problems, and I’m passionate about combining my interests in technology and business to contribute to an innovative future.</p>`;
+        I am an experienced and dependable leader ... proud to be part of the team.`;
 
-        const afterClear = () => {
-          aboutOut.innerHTML = `
-            <div class="row">
-              <div class="col" id="aboutL1"></div>
-              <div class="col" id="aboutR1"></div>
-            </div>
-            <div class="row">
-              <div class="col" id="aboutL2"></div>
-              <div class="col" id="aboutR2"></div>
-            </div>`;
+        const rightText = `I carry a similar mindset to my academics, ... contribute to an innovative future.`;
 
-          const left1  = document.getElementById("aboutL1");
-          const right1 = document.getElementById("aboutR1");
-          const left2  = document.getElementById("aboutL2");
-          const right2 = document.getElementById("aboutR2");
+      const afterClear = () => {
+        aboutOut.innerHTML = `
+          <div class="row">
+            <div class="col" id="aboutL1"></div>
+            <div class="col" id="aboutR1"></div>
+          </div>
+          <div class="row">
+            <div class="col" id="aboutL2"></div>
+            <div class="col" id="aboutR2"></div>
+          </div>`;
 
-          // i1 → i2 → p1 → p2 (sequential)
-          right1.innerHTML = `<img src="images/photo1.jpg" alt="Photo 1" class="about-img">`;
-          left2.innerHTML  = `<img src="images/photo2.jpg" alt="Photo 2" class="about-img">`;
-          typeInto(left1, leftHTML, 8).then(() => {
-            return typeInto(right2, rightHTML, 8);
-          });
+        const left1  = document.getElementById("aboutL1");
+        const right1 = document.getElementById("aboutR1");
+        const left2  = document.getElementById("aboutL2");
+        const right2 = document.getElementById("aboutR2");
 
-          active = "about";
-        };
+        // show both images right away
+        right1.innerHTML = `<img src="images/photo1.jpg" alt="Photo 1" class="about-img">`;
+        left2.innerHTML  = `<img src="images/photo2.jpg" alt="Photo 2" class="about-img">`;
+
+        // create <p> upfront so margins apply
+        const pLeft = document.createElement("p");
+        const pRight = document.createElement("p");
+        left1.appendChild(pLeft);
+        right2.appendChild(pRight);
+
+        // now type inside the <p> elements
+        typeInto(pLeft, leftText, 8).then(() => {
+          return typeInto(pRight, rightText, 8);
+        });
+
+        active = "about";
+      };
 
         if (active === "about")       { highlightAndDelete(aboutOut, afterClear); }
         else if (active === "links")  { highlightAndDelete(linksOut, afterClear); }
