@@ -394,10 +394,10 @@
           const left2  = document.getElementById("aboutL2");
           const right2 = document.getElementById("aboutR2");
 
-          // p1 → i1 → i2 → p2 (sequential)
+          // i1 → i2 → p1 → p2 (sequential)
+          right1.innerHTML = `<img src="images/photo1.jpg" alt="Photo 1" class="about-img">`;
+          left2.innerHTML  = `<img src="images/photo2.jpg" alt="Photo 2" class="about-img">`;
           typeInto(left1, leftHTML, 8).then(() => {
-            right1.innerHTML = `<img src="images/photo1.jpg" alt="Photo 1" class="about-img">`;
-            left2.innerHTML  = `<img src="images/photo2.jpg" alt="Photo 2" class="about-img">`;
             return typeInto(right2, rightHTML, 8);
           });
 
