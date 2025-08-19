@@ -226,29 +226,37 @@
         typingStop = false;
         if (typingTimer) clearTimeout(typingTimer);
         el.innerHTML = "";
+
+        // Instant render path (used for links with speed 0)
+        if (speed === 0) {
+          el.innerHTML = text;
+          return;
+        }
+
         let i = 0;
         (function step() {
           if (typingStop) return;
+
           if (i < text.length) {
-            if (s[part.i] === "<") {
-              // If it’s an <a> tag, grab the whole thing at once
-              if (s.slice(part.i, part.i + 2).toLowerCase() === "<a") {
-                const close = s.indexOf("</a>", part.i);
+            if (text[i] === "<") {
+              // If it’s an <a>…</a>, insert the whole link at once
+              if (text.slice(i, i + 2).toLowerCase() === "<a") {
+                const close = text.indexOf("</a>", i);
                 if (close !== -1) {
-                  const fullLink = s.slice(part.i, close + 4);
-                  part.el.innerHTML += fullLink.trim();  // add full anchor instantly, trim removes weird spaces
-                  part.i = close + 4;
+                  const fullLink = text.slice(i, close + 4);
+                  el.innerHTML += fullLink.trim();
+                  i = close + 4;
                 } else {
-                  const end = s.indexOf(">", part.i);
-                  const tag = s.slice(part.i, end !== -1 ? end + 1 : part.i + 1);
-                  part.el.innerHTML += tag.trim();
-                  part.i = end !== -1 ? end + 1 : part.i + 1;
+                  const end = text.indexOf(">", i);
+                  const tag = text.slice(i, end !== -1 ? end + 1 : i + 1);
+                  el.innerHTML += tag.trim();
+                  i = end !== -1 ? end + 1 : i + 1;
                 }
               } else {
-                const end = s.indexOf(">", part.i);
-                const tag = s.slice(part.i, end !== -1 ? end + 1 : part.i + 1);
-                part.el.innerHTML += tag;
-                part.i = end !== -1 ? end + 1 : part.i + 1;
+                const end = text.indexOf(">", i);
+                const tag = text.slice(i, end !== -1 ? end + 1 : i + 1);
+                el.innerHTML += tag;
+                i = end !== -1 ? end + 1 : i + 1;
               }
             } else {
               el.innerHTML += text[i++];
