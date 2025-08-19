@@ -230,21 +230,25 @@
         (function step() {
           if (typingStop) return;
           if (i < text.length) {
-            if (text[i] === "<") {
-              if (text.slice(i, i + 2).toLowerCase() === "<a") {
-                const close = text.indexOf("</a>", i);
+            if (s[part.i] === "<") {
+              // If it’s an <a> tag, grab the whole thing at once
+              if (s.slice(part.i, part.i + 2).toLowerCase() === "<a") {
+                const close = s.indexOf("</a>", part.i);
                 if (close !== -1) {
-                  el.innerHTML += text.slice(i, close + 4);
-                  i = close + 4;
+                  const fullLink = s.slice(part.i, close + 4);
+                  part.el.innerHTML += fullLink.trim();  // add full anchor instantly, trim removes weird spaces
+                  part.i = close + 4;
                 } else {
-                  const end = text.indexOf(">", i);
-                  el.innerHTML += text.slice(i, end !== -1 ? end + 1 : i + 1);
-                  i = end !== -1 ? end + 1 : i + 1;
+                  const end = s.indexOf(">", part.i);
+                  const tag = s.slice(part.i, end !== -1 ? end + 1 : part.i + 1);
+                  part.el.innerHTML += tag.trim();
+                  part.i = end !== -1 ? end + 1 : part.i + 1;
                 }
               } else {
-                const end = text.indexOf(">", i);
-                el.innerHTML += text.slice(i, end !== -1 ? end + 1 : i + 1);
-                i = end !== -1 ? end + 1 : i + 1;
+                const end = s.indexOf(">", part.i);
+                const tag = s.slice(part.i, end !== -1 ? end + 1 : part.i + 1);
+                part.el.innerHTML += tag;
+                part.i = end !== -1 ? end + 1 : part.i + 1;
               }
             } else {
               el.innerHTML += text[i++];
