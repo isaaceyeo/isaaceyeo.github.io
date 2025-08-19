@@ -139,20 +139,34 @@
         max-width: 1100px;
         padding: 0 24px 0;
       }
+      
       .type {
-        display: flex;           /* two fixed columns side-by-side */
-        gap: 40px;               /* space between columns */
-        align-items: flex-start; 
+        display: flex;
+        flex-direction: column; /* stack rows vertically */
+        gap: 40px;
       }
 
-      .type .col {
-        flex: 1;                 /* each column takes 50% width */
+      .row {
+        display: flex;
+        gap: 40px;
+        align-items: flex-start;
+      }
+
+      .col {
+        flex: 1;
         min-width: 0;
       }
 
       .type p {
-        margin: 0;               /* remove default extra spacing */
+        margin: 0;
         line-height: 1.5;
+      }
+
+      .about-img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        display: block;
       }
 
       .highlight { background: #cde3ff; color: #333; display: inline; }
@@ -364,20 +378,32 @@
       `I carry a similar mindset to my academics, currently pursuing a dual degree in Business Administration and Computer Science at Wilfrid Laurier University. Balancing two degrees is challenging, but the effort and commitment I’ve contributed has made me proud of my achievements and taught me to manage my time and stay focused. I’m learning how to apply analytical, creative, and technical skills to solve real-world problems, and I’m passionate about combining my interests in technology and business to contribute to an innovative future.`;
 
       const afterClear = () => {
-        // two fixed columns
         aboutOut.innerHTML = `
-          <div class="col" id="aboutL"></div>
-          <div class="col" id="aboutR"></div>`;
+          <div class="row">
+            <div class="col" id="aboutL1"></div>
+            <div class="col" id="aboutR1"></div>
+          </div>
+          <div class="row">
+            <div class="col" id="aboutL2"></div>
+            <div class="col" id="aboutR2"></div>
+          </div>`;
+        
+        const left1  = document.getElementById("aboutL1");
+        const right1 = document.getElementById("aboutR1");
+        const left2  = document.getElementById("aboutL2");
+        const right2 = document.getElementById("aboutR2");
 
-        const leftEl  = document.getElementById("aboutL");
-        const rightEl = document.getElementById("aboutR");
+        // Type paragraph 1 → then show image 1
+        typeInto(left1, leftHTML, 8).then(() => {
+          right1.innerHTML = `<img src="images/photo1.jpg" alt="Photo 1" class="about-img">`;
 
-        // type RIGHT only after LEFT finishes
-        typeInto(leftEl, leftHTML, 8).then(() => {
-          // If we were aborted by a section switch, don’t start the right column
-          if (typingStop) return;
-          return typeInto(rightEl, rightHTML, 8);
+          // After p1 finishes + i1 shows → add image 2, then type paragraph 2
+          left2.innerHTML = `<img src="images/photo2.jpg" alt="Photo 2" class="about-img">`;
+          return typeInto(right2, rightHTML, 8);
         });
+
+        active = "about";
+      };
 
         active = "about";
       };
