@@ -227,35 +227,26 @@
         if (typingTimer) clearTimeout(typingTimer);
         el.innerHTML = "";
 
-        // Instant render path (used for links with speed 0)
-        if (speed === 0) {
-          el.innerHTML = text;
-          return;
-        }
+        if (speed === 0) { el.innerHTML = text; return; }
 
         let i = 0;
         (function step() {
           if (typingStop) return;
-
           if (i < text.length) {
             if (text[i] === "<") {
-              // If it’s an <a>…</a>, insert the whole link at once
               if (text.slice(i, i + 2).toLowerCase() === "<a") {
                 const close = text.indexOf("</a>", i);
                 if (close !== -1) {
-                  const fullLink = text.slice(i, close + 4);
-                  el.innerHTML += fullLink.trim();
+                  el.innerHTML += text.slice(i, close + 4); // whole link at once
                   i = close + 4;
                 } else {
                   const end = text.indexOf(">", i);
-                  const tag = text.slice(i, end !== -1 ? end + 1 : i + 1);
-                  el.innerHTML += tag.trim();
+                  el.innerHTML += text.slice(i, end !== -1 ? end + 1 : i + 1);
                   i = end !== -1 ? end + 1 : i + 1;
                 }
               } else {
                 const end = text.indexOf(">", i);
-                const tag = text.slice(i, end !== -1 ? end + 1 : i + 1);
-                el.innerHTML += tag;
+                el.innerHTML += text.slice(i, end !== -1 ? end + 1 : i + 1);
                 i = end !== -1 ? end + 1 : i + 1;
               }
             } else {
@@ -300,21 +291,35 @@
       // About me
       btnAbout?.addEventListener("click", () => {
         typingStop = true;
-        const text = `
-        <div class="col">
-          <p>Hi, I’m Isaac.\n\nI am an experienced and dependable leader with an innate ability to stay organized, and a proven history of keeping operations running smoothly. During my time with <a href="https://www.mosquito.buzz/buzz-history" target="_blank" rel="noopener noreferrer">mosquito.buzz</a>, I managed operations across New Brunswick and Nova Scotia, leading a small team, handling budgets, and making sure work got done on time and to a high standard — even when the clock wasn’t on my side. I’m passionate about building and sharing a strong team culture, running events, and creating an environment where members genuinely feel proud to be part of the team.</p>
-        </div>
 
-        <div class="col">
-          <p>I carry a similar mindset to my academics, currently pursuing a dual degree in Business Administration and Computer Science at Wilfrid Laurier University. Balancing two degrees is challenging, but the effort and commitment I’ve contributed has made me proud of my achievements and taught me to manage my time and stay focused. I’m learning how to apply analytical, creative, and technical skills to solve real-world problems, and I’m passionate about combining my interests in technology and business to contribute to an innovative future.</p>
-        </div>
-        `;
+        const p1 = `Hi, I’m Isaac. I am an experienced and dependable leader with an innate ability to stay organized, and a proven history of keeping operations running smoothly. During my time with <a href="https://www.mosquito.buzz/buzz-history" target="_blank" rel="noopener noreferrer">mosquito.buzz</a>, I managed operations across New Brunswick and Nova Scotia, leading a small team, handling budgets, and making sure work got done on time and to a high standard — even when the clock wasn’t on my side. I’m passionate about building and sharing a strong team culture, running events, and creating an environment where members genuinely feel proud to be part of the team.`;
+
+        const p2 = `I carry a similar mindset to my academics, currently pursuing a dual degree in Business Administration and Computer Science at Wilfrid Laurier University. Balancing two degrees is challenging, but the effort and commitment I’ve contributed has made me proud of my achievements and taught me to manage my time and stay focused. I’m learning how to apply analytical, creative, and technical skills to solve real-world problems, and I’m passionate about combining my interests in technology and business to contribute to an innovative future.`;
+
+        // if code is open, hide it
         if (active === "code") { hideCode(); active = null; }
-        const afterClear = () => { typeInto(aboutOut, text, 8); active = "about"; };
-        if (active === "about")       { highlightAndDelete(aboutOut, afterClear); }
-        else if (active === "links")  { highlightAndDelete(linksOut, afterClear); }
-        else                          { afterClear(); }
+
+        const afterClear = () => {
+          // Build two fixed columns, then type into each separately
+          aboutOut.innerHTML = `<div class="col" id="col1"></div><div class="col" id="col2"></div>`;
+          const col1 = document.getElementById("col1");
+          const col2 = document.getElementById("col2");
+
+          typeInto(col1, `<p>${p1}</p>`, 8);
+          typeInto(col2, `<p>${p2}</p>`, 8);
+
+          active = "about";
+        };
+
+        if (active === "about") {
+          highlightAndDelete(aboutOut, afterClear);
+        } else if (active === "links") {
+          highlightAndDelete(linksOut, afterClear);
+        } else {
+          afterClear();
+        }
       });
+
 
       // My links
       btnLinks?.addEventListener("click", () => {
