@@ -49,6 +49,46 @@
         top: 72px;
         right: 24px;
       }
+
+      /* dropdown wrapper keeps the menu anchored under the button */
+      .nav-dropdown { position: relative; }
+
+      /* menu panel */
+      .dropdown {
+        position: absolute;
+        top: 100%;            /* just below the button */
+        right: 0;
+        min-width: 180px;
+        padding: 8px 0;
+        background: var(--bg);
+        border: 1px solid var(--line);
+        box-shadow: 0 6px 24px rgba(0,0,0,.08);
+        border-radius: 6px;
+        display: none;        /* hidden by default */
+        z-index: 1000;
+      }
+
+      /* visible state */
+      .dropdown.open { display: block; }
+
+      /* menu items */
+      .dropdown a {
+        display: block;
+        padding: 8px 12px;
+        text-decoration: none;
+        color: var(--text);
+        font: inherit;
+        font-size: 13px;
+        letter-spacing: .01em;
+        white-space: nowrap;
+      }
+
+      .dropdown a:hover,
+      .dropdown a:focus {
+        background: #f2f2f2;
+        outline: none;
+      }
+
       .simple-btn {
         background: none;
         border: none;
@@ -166,7 +206,17 @@
       <!-- TOP-LEFT TEXT LINKS -->
       <div class="button-row">
         <button class="simple-btn" id="btnAbout">About Me</button>
-        <button class="simple-btn" id="btnLinks">Connect</button>
+        <div class="nav-dropdown" id="connectWrap">
+          <button class="simple-btn" id="btnLinks"
+                  aria-haspopup="true" aria-expanded="false">
+            Connect
+          </button>
+          <div class="dropdown" id="connectMenu" role="menu" aria-label="Connect links">
+            <a role="menuitem" href="https://www.linkedin.com/in/isaac-yeo-5071812aa" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a role="menuitem" href="https://www.instagram.com/isaaceyeo/" target="_blank" rel="noopener noreferrer">Instagram</a>
+            <a role="menuitem" href="mailto:yeox5201@mylaurier.ca">Email</a>
+          </div>
+        </div>
         <button class="simple-btn" id="btnProject">Current Project</button>
         <button class="simple-btn" id="btnCode">Self Portrait</button>
       </div>
@@ -320,21 +370,58 @@
         }
       });
 
+      // Dropdown: Connect
+      const connectWrap = document.getElementById("connectWrap");
+      const btnLinksEl  = document.getElementById("btnLinks");
+      const connectMenu = document.getElementById("connectMenu");
 
-      // My links
-      btnLinks?.addEventListener("click", () => {
-        typingStop = true;
-        const text = `<a href="https://www.linkedin.com/in/isaac-yeo-5071812aa" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      let hoverTimer = null;
 
-<a href="https://www.instagram.com/isaaceyeo/" target="_blank" rel="noopener noreferrer">Instagram</a>
+      function openMenu() {
+        connectMenu.classList.add("open");
+        btnLinksEl.setAttribute("aria-expanded", "true");
+      }
+      function closeMenu() {
+        connectMenu.classList.remove("open");
+        btnLinksEl.setAttribute("aria-expanded", "false");
+      }
+      function toggleMenu() {
+        if (connectMenu.classList.contains("open")) closeMenu();
+        else openMenu();
+      }
 
-<a href="mailto:yeox5201@mylaurier.ca">Email</a>`;
+      // open on click
+      btnLinksEl.addEventListener("click", (e) => {
+        e.stopPropagation();
+        toggleMenu();
+      });
 
-        if (active === "code") { hideCode(); active = null; }
-        const afterClear = () => { typeInto(linksOut, text, 0); active = "links"; };
-        if (active === "links")      { highlightAndDelete(linksOut, afterClear); }
-        else if (active === "about") { highlightAndDelete(aboutOut, afterClear); }
-        else                          { afterClear(); }
+      // open after 1s hover
+      connectWrap.addEventListener("mouseenter", () => {
+        hoverTimer = setTimeout(openMenu, 1000);
+      });
+      connectWrap.addEventListener("mouseleave", () => {
+        if (hoverTimer) { clearTimeout(hoverTimer); hoverTimer = null; }
+        closeMenu();
+      });
+
+      // close on click-away
+      document.addEventListener("click", (e) => {
+        if (!connectWrap.contains(e.target)) closeMenu();
+      });
+
+      // keyboard: ESC to close; Down to focus first item when opening
+      btnLinksEl.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") { closeMenu(); btnLinksEl.focus(); }
+        if ((e.key === "ArrowDown" || e.key === "Enter" || e.key === " ") && !connectMenu.classList.contains("open")) {
+          e.preventDefault();
+          openMenu();
+          const first = connectMenu.querySelector('a');
+          first && first.focus();
+        }
+      });
+      connectMenu.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") { closeMenu(); btnLinksEl.focus(); }
       });
 
       // Self Portrait (code)
