@@ -272,38 +272,37 @@
       let typingStop = false;
       let typingTimer = null;
 
-      function typeInto(el, text, speed = 10) {
+      function typeInto(el, s, speed = 10) {
         typingStop = false;
         if (typingTimer) clearTimeout(typingTimer);
         el.innerHTML = "";
 
-        if (speed === 0) { el.innerHTML = text; return; }
-
         let i = 0;
         (function step() {
           if (typingStop) return;
-          if (i < text.length) {
-            if (text[i] === "<") {
-              if (text.slice(i, i + 2).toLowerCase() === "<a") {
-                const close = text.indexOf("</a>", i);
-                if (close !== -1) {
-                  el.innerHTML += text.slice(i, close + 4); // whole link at once
-                  i = close + 4;
-                } else {
-                  const end = text.indexOf(">", i);
-                  el.innerHTML += text.slice(i, end !== -1 ? end + 1 : i + 1);
-                  i = end !== -1 ? end + 1 : i + 1;
-                }
+          if (i >= s.length) return;
+
+          if (s[i] === "<") {
+            // If it's an <a>…</a>, drop the whole thing instantly (prevents weird gaps)
+            if (s.slice(i, i + 2).toLowerCase() === "<a") {
+              const close = s.indexOf("</a>", i);
+              if (close !== -1) {
+                el.innerHTML += s.slice(i, close + 4);
+                i = close + 4;
               } else {
-                const end = text.indexOf(">", i);
-                el.innerHTML += text.slice(i, end !== -1 ? end + 1 : i + 1);
+                const end = s.indexOf(">", i);
+                el.innerHTML += s.slice(i, end !== -1 ? end + 1 : i + 1);
                 i = end !== -1 ? end + 1 : i + 1;
               }
             } else {
-              el.innerHTML += text[i++];
+              const end = s.indexOf(">", i);
+              el.innerHTML += s.slice(i, end !== -1 ? end + 1 : i + 1);
+              i = end !== -1 ? end + 1 : i + 1;
             }
-            typingTimer = setTimeout(step, speed);
+          } else {
+            el.innerHTML += s[i++];
           }
+          typingTimer = setTimeout(step, speed);
         })();
       }
 
@@ -341,34 +340,30 @@
       // About me
       btnAbout?.addEventListener("click", () => {
         typingStop = true;
-
-        const p1 = `Hi, I’m Isaac. I am an experienced and dependable leader with an innate ability to stay organized, and a proven history of keeping operations running smoothly. During my time with <a href="https://www.mosquito.buzz/buzz-history" target="_blank" rel="noopener noreferrer">mosquito.buzz</a>, I managed operations across New Brunswick and Nova Scotia, leading a small team, handling budgets, and making sure work got done on time and to a high standard — even when the clock wasn’t on my side. I’m passionate about building and sharing a strong team culture, running events, and creating an environment where members genuinely feel proud to be part of the team.`;
-
-        const p2 = `I carry a similar mindset to my academics, currently pursuing a dual degree in Business Administration and Computer Science at Wilfrid Laurier University. Balancing two degrees is challenging, but the effort and commitment I’ve contributed has made me proud of my achievements and taught me to manage my time and stay focused. I’m learning how to apply analytical, creative, and technical skills to solve real-world problems, and I’m passionate about combining my interests in technology and business to contribute to an innovative future.`;
-
-        // if code is open, hide it
         if (active === "code") { hideCode(); active = null; }
 
+        const leftHTML =
+      `Hi, I’m Isaac.<br><br>
+      I am an experienced and dependable leader with an innate ability to stay organized, and a proven history of keeping operations running smoothly. During my time with <a href="https://www.mosquito.buzz/buzz-history" target="_blank" rel="noopener noreferrer">mosquito.buzz</a>, I managed operations across New Brunswick and Nova Scotia, leading a small team, handling budgets, and making sure work got done on time and to a high standard — even when the clock wasn’t on my side. I’m passionate about building and sharing a strong team culture, running events, and creating an environment where members genuinely feel proud to be part of the team.`;
+
+        const rightHTML =
+      `I carry a similar mindset to my academics, currently pursuing a dual degree in Business Administration and Computer Science at Wilfrid Laurier University. Balancing two degrees is challenging, but the effort and commitment I’ve contributed has made me proud of my achievements and taught me to manage my time and stay focused. I’m learning how to apply analytical, creative, and technical skills to solve real-world problems, and I’m passionate about combining my interests in technology and business to contribute to an innovative future.`;
+
         const afterClear = () => {
-          // Build two fixed columns, then type into each separately
-          aboutOut.innerHTML = `<div class="col" id="col1"></div><div class="col" id="col2"></div>`;
-          const col1 = document.getElementById("col1");
-          const col2 = document.getElementById("col2");
-
-          typeInto(col1, `<p>${p1}</p>`, 8);
-          typeInto(col2, `<p>${p2}</p>`, 8);
-
+          // two fixed columns
+          aboutOut.innerHTML = `
+            <div class="col" id="aboutL"></div>
+            <div class="col" id="aboutR"></div>`;
+          typeInto(document.getElementById("aboutL"), leftHTML, 8);
+          typeInto(document.getElementById("aboutR"), rightHTML, 8);
           active = "about";
         };
 
-        if (active === "about") {
-          highlightAndDelete(aboutOut, afterClear);
-        } else if (active === "links") {
-          highlightAndDelete(linksOut, afterClear);
-        } else {
-          afterClear();
-        }
+        if (active === "about")       { highlightAndDelete(aboutOut, afterClear); }
+        else if (active === "links")  { highlightAndDelete(linksOut, afterClear); }
+        else                          { afterClear(); }
       });
+
 
       // Dropdown: Connect
       const connectWrap = document.getElementById("connectWrap");
