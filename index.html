@@ -334,25 +334,28 @@
     </div>
 
     <div class="layout">
-        <!-- LEFT: Upload -->
-        <div class="card">
-            <h2>1. Upload & Analyze</h2>
-            <p>
-                For security reasons, you must upload your document on this page. 
-                We scan the text and flag potential disclosure gaps.
-            </p>
+    <!-- 1. UPLOAD — FULL WIDTH -->
+    <div class="card" style="margin-bottom: 20px;">
+        <h2>1. Upload & Analyze</h2>
+        <p>
+            For security reasons, you must upload your document on this page. 
+            We scan the text and flag potential disclosure gaps.
+        </p>
 
-            <div class="upload-group">
-                <input type="file" id="fileInput" accept=".pdf,.txt" />
-                <button id="analyzeBtn">Run Compliance Check</button>
-                <div id="loading">Reading document and scanning for legal terms…</div>
-                <div class="hint">
-                    Supported formats: PDF (.pdf) or plain text (.txt).
-                </div>
+        <div class="upload-group">
+            <input type="file" id="fileInput" accept=".pdf,.txt" />
+            <button id="analyzeBtn">Run Compliance Check</button>
+            <div id="loading">Reading document and scanning for legal terms…</div>
+            <div class="hint">
+                Supported formats: PDF (.pdf) or plain text (.txt).
             </div>
         </div>
+    </div>
 
-        <!-- RIGHT: Checklist (side-by-side with Upload) -->
+    <!-- 2 & 3 SIDE BY SIDE -->
+    <div class="layout">
+        
+        <!-- LEFT: CHECKLIST -->
         <div class="card">
             <h2>2. Detailed Checklist</h2>
             <p>
@@ -361,41 +364,42 @@
             </p>
 
             <div class="checklist-grid" id="checklistGrid">
-                <!-- Cards go here -->
+                <!-- Injected by JS -->
             </div>
         </div>
+
+        <!-- RIGHT: SUMMARY -->
+        <div class="card">
+            <h2>3. Compliance Summary</h2>
+
+            <div class="summary-metric">
+                <div>
+                    <div class="summary-score" id="scoreDisplay">0 / 8</div>
+                    <div class="summary-label">Checklist Items Satisfied</div>
+                </div>
+                <div id="riskBadge" class="risk-badge risk-high">
+                    High Risk
+                </div>
+            </div>
+
+            <div class="progress-bar-outer">
+                <div id="progressInner" class="progress-bar-inner"></div>
+            </div>
+
+            <div class="summary-note" id="riskDetail">
+                Run an analysis to see your compliance score and risk level.
+            </div>
+
+            <div id="statAlert" class="alert alert-info" style="margin-top:14px;">
+                Statutory rights (disclosure, fair dealing, right to associate) apply even if 
+                they are not written in the contract. If they are not mentioned, franchisees 
+                may still expect them — increasing legal risk.
+            </div>
+        </div>
+
     </div>
 
-    <!-- SUMMARY as section 3 -->
-    <div class="card">
-        <h2>3. Compliance Summary</h2>
-
-        <div class="summary-metric">
-            <div>
-                <div class="summary-score" id="scoreDisplay">0 / 8</div>
-                <div class="summary-label">Checklist Items Satisfied</div>
-            </div>
-            <div id="riskBadge" class="risk-badge risk-high">
-                High Risk
-            </div>
-        </div>
-
-        <div class="progress-bar-outer">
-            <div id="progressInner" class="progress-bar-inner"></div>
-        </div>
-
-        <div class="summary-note" id="riskDetail">
-            Run an analysis to see your compliance score and risk level.
-        </div>
-
-        <div id="statAlert" class="alert alert-info" style="margin-top:14px;">
-            Statutory rights (disclosure, fair dealing, right to associate) apply even if 
-            they are not written in the contract. If they are not mentioned, franchisees 
-            may still expect them — increasing legal risk.
-        </div>
-    </div>
-
-    <!-- SIGNING stays as section 4 -->
+    <!-- 4. SIGNING — FULL WIDTH -->
     <div class="card sign-card">
         <h2>4. Signing Lock</h2>
         <p>
@@ -408,6 +412,7 @@
             Disclosure incomplete. Do <strong>NOT</strong> sign until all red items are resolved.
         </div>
     </div>
+
 
 </div>
 
