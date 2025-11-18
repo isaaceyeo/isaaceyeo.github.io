@@ -58,15 +58,8 @@
             margin-bottom: 10px;
         }
 
-        #fileInput {
-            margin-top: 15px;
-            padding: 12px;
-            background: var(--teal);
-            border-radius: 8px;
-        }
-
-        #analyzeBtn {
-            margin-top: 25px;
+        #continueBtn {
+            margin-top: 20px;
             padding: 14px 26px;
             font-size: 17px;
             background: var(--navy);
@@ -77,15 +70,14 @@
             transition: 0.2s;
         }
 
-        #analyzeBtn:hover {
+        #continueBtn:hover {
             background: var(--steel);
         }
 
-        #loading {
-            display: none;
-            margin-top: 20px;
-            font-size: 15px;
+        .note {
+            font-size: 14px;
             color: var(--steel);
+            margin-top: 12px;
         }
 
         footer {
@@ -102,19 +94,19 @@
 <div class="container">
     <h1>Franchise Disclosure Compliance Checker</h1>
     <p>
-        Upload your franchise disclosure document to check compliance with the 
-        <strong>Arthur Wishart Act (Franchise Disclosure)</strong>.
+        This tool helps you check whether a franchise disclosure document complies with the 
+        <strong>Arthur Wishart Act (Franchise Disclosure)</strong>.  
+        You will upload your document on the next page.
     </p>
 
     <div id="uploadSection">
-        <h3>Upload Your Document</h3>
-        <input type="file" id="fileInput" accept=".pdf,.txt" />
+        <h3>Start Compliance Review</h3>
 
-        <br>
+        <button id="continueBtn">Continue to Compliance Checker</button>
 
-        <button id="analyzeBtn">Analyze Document</button>
-
-        <div id="loading">Extracting text and analyzing… please wait.</div>
+        <div class="note">
+            On the next page, you will upload your PDF or TXT document and run the automated analysis.
+        </div>
     </div>
 
     <footer>
@@ -123,16 +115,7 @@
 </div>
 
 <script>
-    document.getElementById("analyzeBtn").onclick = function() {
-        const file = document.getElementById("fileInput").files[0];
-
-        if (!file) {
-            alert("Please upload a file first.");
-            return;
-        }
-
-        // Pass file name to next page
-        localStorage.setItem("uploadedFileName", file.name);
+    document.getElementById("continueBtn").onclick = function() {
         window.location.href = "results.html";
     };
 </script>
