@@ -334,7 +334,7 @@
     </div>
 
     <div class="layout">
-        <!-- LEFT: Upload + Checklist -->
+        <!-- LEFT: Upload -->
         <div class="card">
             <h2>1. Upload & Analyze</h2>
             <p>
@@ -350,69 +350,52 @@
                     Supported formats: PDF (.pdf) or plain text (.txt).
                 </div>
             </div>
-
-            <div class="checklist-section">
-                <div class="checklist-title">Checklist Items</div>
-                <p class="hint">
-                    We look for the following key components:
-                </p>
-                <ul class="hint">
-                    <li>Consideration (fees & royalties)</li>
-                    <li>Conduct of the business</li>
-                    <li>Termination terms</li>
-                    <li>Restrictive covenants</li>
-                    <li>Intellectual property rights</li>
-                    <li>Right to disclosure (material facts)</li>
-                    <li>Duty of fair dealing</li>
-                    <li>Right to associate</li>
-                </ul>
-            </div>
         </div>
 
-        <!-- RIGHT: Summary -->
+        <!-- RIGHT: Checklist (side-by-side with Upload) -->
         <div class="card">
-            <h2>2. Compliance Summary</h2>
+            <h2>2. Detailed Checklist</h2>
+            <p>
+                Each item below is scanned for keywords in your document. This tool does not give legal advice, 
+                but helps flag potential gaps for review.
+            </p>
 
-            <div class="summary-metric">
-                <div>
-                    <div class="summary-score" id="scoreDisplay">0 / 8</div>
-                    <div class="summary-label">Checklist Items Satisfied</div>
-                </div>
-                <div id="riskBadge" class="risk-badge risk-high">
-                    High Risk
-                </div>
-            </div>
-
-            <div class="progress-bar-outer">
-                <div id="progressInner" class="progress-bar-inner"></div>
-            </div>
-
-            <div class="summary-note" id="riskDetail">
-                Run an analysis to see your compliance score and risk level.
-            </div>
-
-            <div id="statAlert" class="alert alert-info" style="margin-top:14px;">
-                Statutory rights (disclosure, fair dealing, right to associate) apply even if 
-                they are not written in the contract. If they are not mentioned, franchisees 
-                may still expect them — increasing legal risk.
+            <div class="checklist-grid" id="checklistGrid">
+                <!-- Cards go here -->
             </div>
         </div>
     </div>
 
-    <!-- FULL-WIDTH CHECKLIST GRID -->
+    <!-- SUMMARY as section 3 -->
     <div class="card">
-        <h2>3. Detailed Checklist</h2>
-        <p>
-            Each item below is scanned for keywords in your document. This tool does not give legal advice, 
-            but helps flag potential gaps for review.
-        </p>
+        <h2>3. Compliance Summary</h2>
 
-        <div class="checklist-grid" id="checklistGrid">
-            <!-- Cards will be injected by JavaScript -->
+        <div class="summary-metric">
+            <div>
+                <div class="summary-score" id="scoreDisplay">0 / 8</div>
+                <div class="summary-label">Checklist Items Satisfied</div>
+            </div>
+            <div id="riskBadge" class="risk-badge risk-high">
+                High Risk
+            </div>
+        </div>
+
+        <div class="progress-bar-outer">
+            <div id="progressInner" class="progress-bar-inner"></div>
+        </div>
+
+        <div class="summary-note" id="riskDetail">
+            Run an analysis to see your compliance score and risk level.
+        </div>
+
+        <div id="statAlert" class="alert alert-info" style="margin-top:14px;">
+            Statutory rights (disclosure, fair dealing, right to associate) apply even if 
+            they are not written in the contract. If they are not mentioned, franchisees 
+            may still expect them — increasing legal risk.
         </div>
     </div>
 
-    <!-- SIGNING LOCK SECTION -->
+    <!-- SIGNING stays as section 4 -->
     <div class="card sign-card">
         <h2>4. Signing Lock</h2>
         <p>
