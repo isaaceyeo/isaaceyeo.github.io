@@ -546,10 +546,14 @@
                 statusEl.classList.add("status-found");
                 iconSpan.textContent = "✔";
                 textSpan.textContent = "Found in document";
+
+                // Show the *actual* matching keyword
+                const detected = item.keywords.find(kw => text.includes(kw.toLowerCase()));
+
                 if (item.severity === "statutory") {
-                    descEl.textContent = "This statutory right is referenced in your document.";
+                    descEl.textContent = `Detected keyword: "${detected}". This statutory right is referenced in your document.`;
                 } else {
-                    descEl.textContent = "Core business term appears to be addressed.";
+                    descEl.textContent = `Detected keyword: "${detected}". Core business term appears to be addressed.`;
                 }
             } else if (found === false) {
                 if (item.severity === "required") {
