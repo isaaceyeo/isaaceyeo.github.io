@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Franchise Disclosure Compliance Checker</title>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+
     <style>
         :root {
             --red: #CC4B4B;
@@ -12,6 +14,7 @@
             --teal: #B9DCD5;
             --steel: #5A85A0;
             --navy: #1E324F;
+            --green: #4CAF50;
         }
 
         body {
@@ -26,7 +29,7 @@
         .container {
             background: white;
             padding: 40px 50px;
-            width: 750px;
+            width: 780px;
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.12);
             border-top: 12px solid var(--navy);
@@ -47,18 +50,19 @@
             color: var(--steel);
         }
 
-        #uploadSection {
-            margin-top: 35px;
-            text-align: center;
-        }
-
-        h3 {
-            font-size: 20px;
+        h2 {
             color: var(--navy);
-            margin-bottom: 10px;
+            margin-top: 40px;
         }
 
-        #continueBtn {
+        #fileInput {
+            padding: 12px;
+            background: var(--teal);
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        #analyzeBtn {
             margin-top: 20px;
             padding: 14px 26px;
             font-size: 17px;
@@ -67,57 +71,215 @@
             border: none;
             border-radius: 10px;
             cursor: pointer;
-            transition: 0.2s;
         }
 
-        #continueBtn:hover {
-            background: var(--steel);
-        }
-
-        .note {
-            font-size: 14px;
-            color: var(--steel);
-            margin-top: 12px;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            font-size: 14px;
+        #loading {
+            margin-top: 20px;
+            display: none;
             color: var(--steel);
         }
+
+        .result-box {
+            background: var(--offwhite);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 25px;
+        }
+
+        .item {
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            border: 1px solid #dcdcdc;
+            background: white;
+        }
+
+        .found {
+            color: var(--green);
+            font-weight: bold;
+        }
+
+        .missing {
+            color: var(--red);
+            font-weight: bold;
+        }
+
+        #signBtn {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            margin-top: 25px;
+            border-radius: 10px;
+            border: none;
+            background: grey;
+            color: white;
+        }
+
+        #signBtn.enabled {
+            background: var(--green);
+            cursor: pointer;
+        }
+
     </style>
-
 </head>
 <body>
 
 <div class="container">
+
     <h1>Franchise Disclosure Compliance Checker</h1>
     <p>
-        This tool helps you check whether a franchise disclosure document complies with the 
-        <strong>Arthur Wishart Act (Franchise Disclosure)</strong>.  
-        You will upload your document on the next page.
+        Upload your franchise disclosure document to check compliance with the 
+        <strong>Arthur Wishart Act (Franchise Disclosure)</strong>.
     </p>
 
-    <div id="uploadSection">
-        <h3>Start Compliance Review</h3>
+    <h2>Upload Your Document</h2>
+    <input type="file" id="fileInput" accept=".pdf,.txt" />
+    <button id="analyzeBtn">Analyze Document</button>
+    <div id="loading">Extracting text and analyzing… please wait.</div>
 
-        <button id="continueBtn">Continue to Compliance Checker</button>
+    <div id="results"></div>
 
-        <div class="note">
-            On the next page, you will upload your PDF or TXT document and run the automated analysis.
-        </div>
-    </div>
-
-    <footer>
-        Built for Definitely-Not-Evil-Corp Inc. — Legal Compliance MVP
-    </footer>
 </div>
 
 <script>
-    document.getElementById("continueBtn").onclick = function() {
-        window.location.href = "results.html";
-    };
+const checklistItems = [
+    { 
+        id: "consideration",
+        label: "Fees & Royalties (Consideration of the Parties)",
+        keywords: ["fee","fees","royalty","royalties","initial fee","franchise fee","payment"]
+    },
+    { 
+        id: "conduct",
+        label: "Conduct of the Business",
+        keywords: [
+            "conduct of the business",
+            "operational standards",
+            "operating standards",
+            "operations manual",
+            "store appearance",
+            "store design",
+            "designated territory",
+            "approved location",
+            "site selection",
+            "approved suppliers",
+            "operating requirements",
+            "product standards",
+            "quality control standards"
+        ]
+    },
+    { 
+        id: "termination",
+        label: "Termination of the Agreement",
+        keywords: ["termination","terminate","end of this agreement","expiry","cancel this agreement"]
+    },
+    { 
+        id: "restrictive",
+        label: "Restrictive Covenants (Non-Competition)",
+        keywords: ["restrictive covenant","non-compete","non competition","not compete","restriction on competing"]
+    },
+    { 
+        id: "ip",
+        label: "Intellectual Property Rights",
+        keywords: ["intellectual property","trademark","trademarks","logo","brand","proprietary system"]
+    },
+    { 
+        id: "disclosure",
+        label: "Disclosure of Material Facts",
+        keywords: ["material fact","material facts","full disclosure","disclosure document","arthur wishart"]
+    },
+    { 
+        id: "goodfaith",
+        label: "Duty of Fair Dealing / Good Faith",
+        keywords: ["good faith","fair dealing","act honestly","duty of good faith"]
+    },
+    { 
+        id: "associate",
+        label: "Right to Associate",
+        keywords: ["right to associate","association of franchisees","franchisee association","associate with other franchisees"]
+    }
+];
+
+document.getElementById("analyzeBtn").onclick = async function () {
+    const file = document.getElementById("fileInput").files[0];
+    if (!file) {
+        alert("Please upload a file first.");
+        return;
+    }
+
+    document.getElementById("loading").style.display = "block";
+
+    let text = "";
+
+    if (file.type === "text/plain") {
+        text = await file.text();
+    } else {
+        const arrayBuffer = await file.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+
+        for (let i = 1; i <= pdf.numPages; i++) {
+            const page = await pdf.getPage(i);
+            const content = await page.getTextContent();
+            const pageText = content.items.map(i => i.str).join(" ");
+            text += pageText + "\n";
+        }
+    }
+
+    text = text.toLowerCase();
+
+    const resultsMap = {};
+
+    checklistItems.forEach(item => {
+        resultsMap[item.id] = item.keywords.some(kw => text.includes(kw.toLowerCase()));
+    });
+
+    renderResults(resultsMap);
+};
+
+function renderResults(results) {
+    const container = document.getElementById("results");
+    container.innerHTML = "";
+
+    let foundCount = Object.values(results).filter(x => x).length;
+
+    let html = `
+        <h2>Compliance Results</h2>
+        <div class="result-box">
+            <p><strong>Compliance Score:</strong> ${foundCount} / ${checklistItems.length}</p>
+    `;
+
+    checklistItems.forEach(item => {
+        html += `
+            <div class="item">
+                <span>${item.label}</span>
+                <span class="${results[item.id] ? "found" : "missing"}">
+                    ${results[item.id] ? "✔ Found" : "✘ Missing"}
+                </span>
+            </div>
+        `;
+    });
+
+    html += `</div>`;
+
+    html += `
+        <button id="signBtn" ${foundCount === checklistItems.length ? "" : "disabled"}>
+            Proceed to Signature
+        </button>
+        <p style="color: var(--red); font-size: 14px; margin-top: 10px;">
+            ${foundCount === checklistItems.length 
+                ? "" 
+                : "Disclosure incomplete. Do NOT sign until missing items are resolved."}
+        </p>
+    `;
+
+    container.innerHTML = html;
+
+    if (foundCount === checklistItems.length) {
+        const btn = document.getElementById("signBtn");
+        btn.classList.add("enabled");
+    }
+}
 </script>
 
 </body>
