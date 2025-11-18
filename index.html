@@ -228,9 +228,9 @@
         }
 
         .checklist-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            grid-gap: 12px;
         }
 
         .item-card {
@@ -329,48 +329,49 @@
         <h1 class="header-title">Franchise Compliance Analysis</h1>
         <p class="header-sub">
             This dashboard analyzes your franchise disclosure or agreement against core 
-            requirements from <strong>Ontario franchise law.</strong>
+            requirements from <strong>Ontario franchise law</strong> and your course’s Topic 7 checklist.
         </p>
     </div>
 
     <div class="layout">
-    <!-- 1. UPLOAD — FULL WIDTH -->
-    <div class="card" style="margin-bottom: 20px;">
-        <h2>1. Upload & Analyze</h2>
-        <p>
-            For security reasons, you must upload your document on this page. 
-            We scan the text and flag potential disclosure gaps.
-        </p>
-
-        <div class="upload-group">
-            <input type="file" id="fileInput" accept=".pdf,.txt" />
-            <button id="analyzeBtn">Run Compliance Check</button>
-            <div id="loading">Reading document and scanning for legal terms…</div>
-            <div class="hint">
-                Supported formats: PDF (.pdf) or plain text (.txt).
-            </div>
-        </div>
-    </div>
-
-    <!-- 2 & 3 SIDE BY SIDE -->
-    <div class="layout">
-        
-        <!-- LEFT: CHECKLIST -->
+        <!-- LEFT: Upload + Checklist -->
         <div class="card">
-            <h2>2. Detailed Checklist</h2>
+            <h2>1. Upload & Analyze</h2>
             <p>
-                Each item below is scanned for keywords in your document. This tool does not give legal advice, 
-                but helps flag potential gaps for review.
+                For security reasons, you must upload your document on this page. 
+                We scan the text and flag potential disclosure gaps.
             </p>
 
-            <div class="checklist-grid" id="checklistGrid">
-                <!-- Injected by JS -->
+            <div class="upload-group">
+                <input type="file" id="fileInput" accept=".pdf,.txt" />
+                <button id="analyzeBtn">Run Compliance Check</button>
+                <div id="loading">Reading document and scanning for legal terms…</div>
+                <div class="hint">
+                    Supported formats: PDF (.pdf) or plain text (.txt).
+                </div>
+            </div>
+
+            <div class="checklist-section">
+                <div class="checklist-title">Checklist Items</div>
+                <p class="hint">
+                    We look for the following key components from your Topic 7 slides:
+                </p>
+                <ul class="hint">
+                    <li>Consideration (fees & royalties)</li>
+                    <li>Conduct of the business</li>
+                    <li>Termination terms</li>
+                    <li>Restrictive covenants</li>
+                    <li>Intellectual property rights</li>
+                    <li>Right to disclosure (material facts)</li>
+                    <li>Duty of fair dealing</li>
+                    <li>Right to associate</li>
+                </ul>
             </div>
         </div>
 
-        <!-- RIGHT: SUMMARY -->
+        <!-- RIGHT: Summary -->
         <div class="card">
-            <h2>3. Compliance Summary</h2>
+            <h2>2. Compliance Summary</h2>
 
             <div class="summary-metric">
                 <div>
@@ -396,10 +397,22 @@
                 may still expect them — increasing legal risk.
             </div>
         </div>
-
     </div>
 
-    <!-- 4. SIGNING — FULL WIDTH -->
+    <!-- FULL-WIDTH CHECKLIST GRID -->
+    <div class="card">
+        <h2>3. Detailed Checklist</h2>
+        <p>
+            Each item below is scanned for keywords in your document. This tool does not give legal advice, 
+            but helps flag potential gaps for review.
+        </p>
+
+        <div class="checklist-grid" id="checklistGrid">
+            <!-- Cards will be injected by JavaScript -->
+        </div>
+    </div>
+
+    <!-- SIGNING LOCK SECTION -->
     <div class="card sign-card">
         <h2>4. Signing Lock</h2>
         <p>
@@ -412,7 +425,6 @@
             Disclosure incomplete. Do <strong>NOT</strong> sign until all red items are resolved.
         </div>
     </div>
-
 
 </div>
 
