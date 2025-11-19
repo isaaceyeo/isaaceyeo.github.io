@@ -761,11 +761,18 @@
 
     analyzeBtn.addEventListener("click", runAnalysis);
 
-    // Dummy click handler for sign button (for demo purposes only)
     signBtn.addEventListener("click", function () {
         if (signBtn.disabled) return;
-            signLockMsg.style.color = "var(--steel)";
-            signLockMsg.innerHTML = "Signing would begin here in a real system.";
+
+        // Get the uploaded file again
+        const file = fileInput.files[0];
+        if (!file) return;
+
+        // Create a temporary object URL for the PDF
+        const pdfURL = URL.createObjectURL(file);
+
+        // Open it in a new tab
+        window.open(pdfURL, "_blank");
     });
 </script>
 </body>
