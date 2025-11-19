@@ -243,6 +243,21 @@
             gap: 6px;
         }
 
+        .item-card.found {
+            background: #E8F7EE; /* light green */
+            border-color: #9ADCB1;
+        }
+
+        .item-card.missing {
+            background: #FDEAEA; /* light red */
+            border-color: #E4A1A1;
+        }
+
+        .item-card.stat-warning {
+            background: #FFF5E1; /* light yellow/orange */
+            border-color: #E8C48A;
+        }
+
         .item-header {
             display: flex;
             justify-content: space-between;
@@ -552,26 +567,40 @@
 
             if (found === true) {
                 statusEl.classList.add("status-found");
+                card.classList.add("found");
+
                 iconSpan.textContent = "✔";
                 textSpan.textContent = "Found in document";
+
+                const detected = item.keywords.find(kw => text.includes(kw.toLowerCase()));
+
                 if (item.severity === "statutory") {
-                    descEl.textContent = "This statutory right is referenced in your document.";
+                    descEl.innerHTML = `Detected keyword: <em>${detected}</em>. This statutory right is referenced in your document.`;
                 } else {
-                    descEl.textContent = "Core business term appears to be addressed.";
+                    descEl.innerHTML = `Detected keyword: <em>${detected}</em>. Core business term appears to be addressed.`;
                 }
+
             } else if (found === false) {
+
                 if (item.severity === "required") {
                     statusEl.classList.add("status-missing");
+                    card.classList.add("missing");
+
                     iconSpan.textContent = "✖";
                     textSpan.textContent = "Missing or unclear";
                     descEl.textContent = "This core agreement term was not detected. Consider reviewing the draft carefully.";
+
                 } else {
                     statusEl.classList.add("status-stat");
+                    card.classList.add("stat-warning");
+
                     iconSpan.textContent = "⚠";
                     textSpan.textContent = "Not mentioned, but still applies by law";
-                    descEl.textContent = "This right exists under the Arthur Wishart Act even if not written. Consider explicitly acknowledging it to avoid misunderstandings.";
+                    descEl.textContent = "This statutory right exists even if not written, but omission may create legal risk.";
                 }
+
             } else {
+
                 statusEl.classList.add("status-stat");
                 iconSpan.textContent = "…";
                 textSpan.textContent = "Awaiting analysis";
