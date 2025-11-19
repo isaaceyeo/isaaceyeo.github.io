@@ -421,6 +421,13 @@
             In a real system, this could be integrated before electronic signatures are enabled.
         </p>
 
+        <div style="margin-top: 12px;">
+            <label style="font-size: 14px; color: var(--steel);">
+                <input type="checkbox" id="overrideCheck" style="margin-right: 6px;">
+                I acknowledge that this document may be incomplete, but I still want to proceed.
+            </label>
+        </div>
+
         <button id="signBtn" disabled>Proceed to Signing</button>
         <div id="signLockMsg">
             Disclosure incomplete. Do <strong>NOT</strong> sign until all red items are resolved.
@@ -720,6 +727,34 @@
                 "They still apply by law and should be honoured in practice.";
         }
     }
+
+    // Override checkbox logic
+    overrideCheck.addEventListener("change", function () {
+        if (overrideCheck.checked) {
+            signBtn.disabled = false;
+            signBtn.classList.add("enabled");
+            signLockMsg.style.color = "#1F7A4D";
+            signLockMsg.innerHTML =
+                "Override enabled. You may proceed, but <strong>signing is NOT recommended</strong> without legal review.";
+        } else {
+            // If override unchecked, revert to normal rule:
+            const allFound = checklistItems.every(item => resultsMap[item.id] === true);
+
+            if (allFound) {
+                signBtn.disabled = false;
+                signBtn.classList.add("enabled");
+                signLockMsg.style.color = "#1F7A4D";
+                signLockMsg.innerHTML =
+                    "All checklist items were detected. You may proceed, but <strong>legal advice is still recommended</strong>.";
+            } else {
+                signBtn.disabled = true;
+                signBtn.classList.remove("enabled");
+                signLockMsg.style.color = "var(--red)";
+                signLockMsg.innerHTML =
+                    "Disclosure incomplete. Do <strong>NOT</strong> sign until all red and warning items are reviewed.";
+            }
+        }
+    });
 
     analyzeBtn.addEventListener("click", runAnalysis);
 
