@@ -623,7 +623,11 @@
     async function runAnalysis() {
         const file = fileInput.files[0];
         if (!file) {
-            alert("Please upload a PDF or text file first.");
+            loadingEl.style.display = "none";
+
+            // Add a message under the upload box
+            loadingEl.innerHTML = "<span style='color: var(--red);'>Please upload a file first.</span>";
+            setTimeout(() => loadingEl.innerHTML = "", 2500);
             return;
         }
 
@@ -761,7 +765,8 @@
     // Dummy click handler for sign button (for demo purposes only)
     signBtn.addEventListener("click", function () {
         if (signBtn.disabled) return;
-        alert("In a full system, this would trigger an e-signature process. For this MVP, it simply demonstrates the lock.");
+            signLockMsg.style.color = "var(--steel)";
+            signLockMsg.innerHTML = "Signing would begin here in a real system.";
     });
 </script>
 </body>
